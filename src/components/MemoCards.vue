@@ -1,7 +1,6 @@
 <template>
   <section>
-    <h2 class="gradation">Here's your note:</h2>
-    <!-- TODO// 並べ替えの基準をオプション式にしたい -->
+    <h2 class="gradation">Here's your notes:</h2>
     <form class="ordering">
       <input type="radio" id="byStars" value="stars" v-model="sortCardsBy" checked>
       <label for="byStars">Rating</label>
@@ -15,7 +14,8 @@
       <div class="cardsRating gradation">{{ setRating(card.rating) }}</div>
       <div class="cardsDate">{{ setDate(card.timestamp) }}</div>
 
-      <edit-memo :edittingCard="cardsArray[index]" @editedCabin="getEditedMemo" class="editButton"></edit-memo>   <!-- 編集の処理：子コンポーネントに対象オブジェクトを渡し、編集後オブジェクトを受け取る -->
+      <edit-memo :edittingCard="cardsArray[index]" @editedCabin="getEditedMemo" class="editButton"></edit-memo>  
+      <!-- ↑編集：子コンポーネントに対象オブジェクトを渡し、編集後オブジェクトを受け取る -->
     </div>
   </section>
 </template>
@@ -62,6 +62,7 @@ export default {
       this.day = this.setDay.getDate()
       this.hours = this.setDay.getHours()
       this.minutes = this.setDay.getMinutes()
+      this.setDay = null
       return (this.year +'/'+ this.month +'/'+ this.day +' '+ this.hours +':'+ this.minutes)
     },
     /* レート値を「★」表示に変換 */
@@ -83,6 +84,7 @@ export default {
     getEditedMemo(value) {
       this.editedMemo = value
       this.$emit('editedCard', this.editedMemo)
+      this.editedMemo = null
     }
   },
   components: {

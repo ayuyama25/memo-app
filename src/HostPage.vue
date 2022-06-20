@@ -25,7 +25,7 @@ export default {
     return {
       info: {
         name: 'MemoApp',
-        message: '作成中'
+        message: ''  //メッセージ欄
       },
       notes: [
         {
@@ -36,6 +36,7 @@ export default {
         id: '0'
         },
       ],
+      newNotes: {},
       correctCard: {},
       targetIndex: '',
     }
@@ -43,7 +44,9 @@ export default {
   methods: {
     /* 表示するメモデータを配列に格納 */
     getMemo(value) {
-      this.notes = value
+      this.newNotes = value
+      this.notes.push(this.newNotes)
+      return this.newNotes = null
     },
     /* 編集後メモオブジェクトidから対象の[index]を検索しnotesを上書き */
     editingCard(value) {
@@ -53,6 +56,8 @@ export default {
       this.notes[this.targetIndex].description = this.correctCard.description
       this.notes[this.targetIndex].rating = this.correctCard.rating
       this.notes[this.targetIndex].timestamp = this.correctCard.timestamp
+      this.targetIndex = null
+      this.correctCard = null
       return this.notes
     }
   },
@@ -65,7 +70,7 @@ export default {
 <style>
 body {
     background-color: #f2f2f2;
-    margin: 0, 5%;
+    margin: 0 5%;
     font-family: tahoma;
 }
 .row {
