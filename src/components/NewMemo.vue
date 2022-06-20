@@ -1,6 +1,6 @@
 <template>
   <section>
-    <button class="inputButton unduration pastel" @click="openModal">Create new note!</button>
+    <button class="inputButton unduration pastel" @click="openModal">Post new memo!</button>
     <div class="overlay" v-show="showContent">
       <div class="content">
         <h2 class="gradation">Create Your Note!</h2>
@@ -33,12 +33,11 @@
 <script>
 export default {
   name: 'NewMemo',
-  props: {
+  props: { //新規ID取得getNewId()メソッドで使用
     cards: Array
   },
   data(){
     return {
-      cabin: [],
       textInput: {
         title: '',
         description: '',
@@ -62,8 +61,9 @@ export default {
           timestamp: new Date(),
           id: this.getNewId(this.cards)
         }
-        this.cabin.unshift(this.cabinCard)
-        this.$emit('memoCabin', this.cabin)
+        this.$emit('memoCabin', this.cabinCard )
+        this.idSerch = null
+        this.cabinCard = null
         this.clearTextImput()
         this.closeModal()
       }
