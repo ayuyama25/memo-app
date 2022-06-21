@@ -11,8 +11,8 @@
     <div class="row cards" v-for="(card, index) in cardsArray" :key ="index">
       <div class="cardsTitle">{{ card.title }}</div>
       <div class="cardsDescription">{{ card.description }}</div>
-      <div class="cardsRating gradation">{{ setRating(card.rating) }}</div>
-      <div class="cardsDate">{{ setDate(card.timestamp) }}</div>
+      <div class="cardsRating gradation">{{ ratingData(card.rating) }}</div>
+      <div class="cardsDate">{{ setYear(card.timestamp) }}/{{ setMonth(card.timestamp) }}/{{ setDay(card.timestamp) }} {{ setHour(card.timestamp) }}:{{ setMinute(card.timestamp) }}</div>
 
       <edit-memo :edittingCard="cardsArray[index]" @editedCabin="getEditedMemo" class="editButton"></edit-memo>  
       <!-- ↑編集：子コンポーネントに対象オブジェクトを渡し、編集後オブジェクトを受け取る -->
@@ -29,15 +29,6 @@ export default {
   data() {
     return {
       editedMemo : {},
-      date : {
-        setDay : '',
-        year: '',
-        month: '',
-        day: '',
-        hours: '',
-        minutes: ''
-      },
-      setStars : '',
       sortCardsBy : 'stars'
     }
   },
@@ -51,35 +42,29 @@ export default {
         return Array.from(this.cards).sort((a,b) => 
         b.timestamp - a.timestamp )
       }
-    }
+    },
+    setYear: () => (timedata) => timedata.getFullYear(),
+    setMonth: () => (timedata) => timedata.getMonth()+1,
+    setDay: () => (timedata) => timedata.getDate(),
+    setHour: () => (timedata) => timedata.getHours(),
+    setMinute: () => (timedata) => timedata.getMinutes(), //TODO: 2桁表記に修正する
+    ratingData: function() {
+      return function(rateData) {
+      if (rateData == 5) {
+        return '★★★★★'
+      } else if (rateData == 4) {
+        return '★★★★・'
+      } else if (rateData == 3) {
+        return '★★★・・'
+      } else if (rateData == 2) {
+      return '★★・・・'
+      } else if (rateData == 1) {
+      return '★・・・・'
+      } else return '・・・・・'
+      }
+    },
   },
   methods: {
-    /* 日付表示変換 */
-    setDate(value) {
-      this.setDay = value
-      this.year = this.setDay.getFullYear()
-      this.month = this.setDay.getMonth()+1
-      this.day = this.setDay.getDate()
-      this.hours = this.setDay.getHours()
-      this.minutes = this.setDay.getMinutes()
-      this.setDay = null
-      return (this.year +'/'+ this.month +'/'+ this.day +' '+ this.hours +':'+ this.minutes)
-    },
-    /* レート値を「★」表示に変換 */
-    setRating(value) {
-      this.setStars = value
-      if (this.setStars == 5) {
-          return '★★★★★'
-        } else if (this.setStars == 4) {
-          return '★★★★・'
-        } else if (this.setStars == 3) {
-          return '★★★・・'
-        } else if (this.setStars == 2) {
-        return '★★・・・'
-        } else if (this.setStars == 1) {
-        return '★・・・・'
-      } else return '・・・・・'
-    },
     /* 孫から編集後オブジェクトを受け取り、親にemit */
     getEditedMemo(value) {
       this.editedMemo = value
