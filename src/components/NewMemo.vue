@@ -1,6 +1,6 @@
 <template>
   <section>
-    <button class="inputButton unduration pastel" @click="openModal">Post new memo!</button>
+    <button class="TopInputButton unduration pastel" @click="openModal">Post new memo!</button>
     <div class="overlay" v-show="showContent">
       <div class="content">
         <h2 class="gradation">Create Your Note!</h2>
@@ -23,6 +23,7 @@
           </select>
 
           <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">GO !!</button>
+          <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
         </form>
         <button @click="closeModal">cancel</button>
       </div>
@@ -47,6 +48,7 @@ export default {
       },
       cabinCard: {},
       showContent: false,
+      errorMessage: false,
       idSerch: new Map()
     }
   },
@@ -62,16 +64,25 @@ export default {
           id: this.getNewId(this.cards)
         }
         this.$emit('memoCabin', this.cabinCard )
+        this.closeModal()        
         this.idSerch = null
         this.cabinCard = null
-        this.clearTextImput()
-        this.closeModal()
+      } else {
+        this.errorMessage = true
+        setTimeout(() => {
+          this.errorMessage = false }
+          ,500
+        )
       }
     },
     /* id付与 */
     getNewId(cardsData) {
-      this.idSerch = cardsData.map((card) => card.id)
-      return Math.max(...this.idSerch) + 1
+      if (this.cards.length == 0 ) {
+        return 0
+      } else {
+        this.idSerch = cardsData.map((card) => card.id)
+        return Math.max(...this.idSerch) + 1
+      }
     },
     /* テキストボックス入力値の初期化 */
     clearTextImput() {
@@ -92,6 +103,21 @@ export default {
 }
 </script>
 <style scoped>
+/* ボタンインタラクションはHostPageに配置、全ボタン共通 */
+.TopInputButton {
+  position: relative;
+  display: inline-block;
+  width: 19rem;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 3.5;
+  user-select: none;
+  transition: all 0.3s;
+  border: none;
+}
+
 .content h2 {
   display: block;
   width: 17rem;
@@ -147,5 +173,11 @@ label {
 .inputText {
   font-size: 1.1rem;
   font-family: tahoma;
+}
+/* 空白メッセージ */
+.errorMessage {
+  font-size: 0.8rem;
+  color: tomato;
+  text-align: start;
 }
 </style>

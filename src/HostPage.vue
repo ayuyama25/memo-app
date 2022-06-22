@@ -2,7 +2,9 @@
 <section>
   <div class="row">
     <img alt="logo" src="./assets/logo-note.png">
-    <new-memo @memoCabin="getMemo" :cards="notes"></new-memo>
+    <div class="new-memo-div">
+      <new-memo @memoCabin="getMemo" :cards="notes"></new-memo>
+    </div>
     <h1>{{ info.name }}</h1>
     <div>{{ info.message }}</div>
     <nav>ホーム/設定
@@ -10,8 +12,8 @@
     </nav>
   </div>
   <div class="row">
-    <div>
-      <memo-cards :cards="notes" @editedCard="editingCard"></memo-cards>
+    <div class="memo-cards-div">
+      <memo-cards :cards="notes" @editedCard="editingCard" @deletedId="getDeleted"></memo-cards>
     </div>
   </div>
 </section>
@@ -24,25 +26,25 @@ export default {
   data() {
     return {
       info: {
-        name: 'MemoApp',
+        name: '↑ Click !!',
         message: ''  //メッセージ欄
       },
       notes: [
         {
-        title: '- Sample Title -',
-        description: '- Sample Description -',
+        title: '- Sample : Create your original note! -',
+        description: '-  Press the "Post new memo!" to start -',
         rating: 0,
         timestamp: new Date(),
         id: '0'
         },
       ],
       newNotes: {},
-      correctCard: {},
+      changeCard: {},
       targetIndex: '',
     }
   },
   methods: {
-    /* 表示するメモデータを配列に格納 */
+    /* 新規メモデータをnotes配列に格納 */
     getMemo(value) {
       this.newNotes = value
       this.notes.push(this.newNotes)
@@ -50,14 +52,23 @@ export default {
     },
     /* 編集後メモオブジェクトidから対象の[index]を検索しnotesを上書き */
     editingCard(value) {
-      this.correctCard = value
-      this.targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === this.correctCard.id )
-      this.notes[this.targetIndex].title = this.correctCard.title
-      this.notes[this.targetIndex].description = this.correctCard.description
-      this.notes[this.targetIndex].rating = this.correctCard.rating
-      this.notes[this.targetIndex].timestamp = this.correctCard.timestamp
+      this.changeCard = value
+      this.targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === this.changeCard.id )
+      this.notes[this.targetIndex].title = this.changeCard.title
+      this.notes[this.targetIndex].description = this.changeCard.description
+      this.notes[this.targetIndex].rating = this.changeCard.rating
+      this.notes[this.targetIndex].timestamp = this.changeCard.timestamp
       this.targetIndex = null
-      this.correctCard = null
+      this.changeCard = null
+      return this.notes
+    },
+    /* 削除対象idからnotesの[index]を検索して削除実行 */
+    getDeleted(value) {
+      this.changeCard = value
+      this.targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === this.changeCard )
+      this.notes.splice([this.targetIndex],1)
+      this.targetIndex = null
+      this.changeCard = null
       return this.notes
     }
   },
@@ -69,14 +80,21 @@ export default {
 </script>
 <style>
 body {
-    background-color: #f2f2f2;
-    margin: 0 5%;
-    font-family: tahoma;
+  background-color: #f2f2f2;
+  margin: 0 5%;
+  font-family: tahoma;
+  text-align: center;
 }
 .row {
-    display: grid;
-    vertical-align: middle;
-    margin: 2em;
+  display: grid;
+  vertical-align: middle;
+  margin: 2em;
+}
+.new-memo-div {
+  padding: 7% 0 0 0;
+}
+.memo-cards-div {
+  text-align: start;
 }
 /* モーダル */
 .overlay {
@@ -106,10 +124,11 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-/* ボタンインタラクション */
+/* グラデーションボタンインタラクション -共通 */
 .inputButton {
   position: relative;
   display: inline-block;
+  margin-top: 1rem;
   cursor: pointer;
   text-align: center;
   font-weight: 600;
@@ -117,28 +136,22 @@ body {
   line-height: 1.5;
   user-select: none;
   transition: all 0.3s;
-  margin: 2rem;
   border: none;
 }
 .unduration {
   font-size: 1.4rem;
-  padding: 3rem 4rem;
+  padding: 4rem;
   color: #fff;
   border-radius: 100% 80px /85px 100%;
 }
 .unduration:hover {
   color: #fff;
-  border-radius: 60% 80px /100% 80%;
+  border-radius: 60% 100px /100% 85%;
 }
 .pastel {
   background-color: plum;
   background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
   background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
   box-shadow: 10px 7px 10px azure;
-}
-</style>
-<style scoped>
-img {
-  display: inline-block;
 }
 </style>

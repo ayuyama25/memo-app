@@ -2,25 +2,27 @@
   <section>
     <h2 class="gradation">Here's your notes:</h2>
     <form class="ordering">
-      <input type="radio" id="byStars" value="stars" v-model="sortCardsBy" checked>
+      <input type="radio" id="byStars" value="stars" v-model="sortCardsBy">
       <label for="byStars">Rating</label>
-      <input type="radio" id="byDate" value="date" v-model="sortCardsBy">
+      <input type="radio" id="byDate" value="date" v-model="sortCardsBy" checked>
       <label for="byDate">Date</label>
     </form>
 
     <div class="row cards" v-for="(card, index) in cardsArray" :key ="index">
-      <div class="cardsTitle">{{ card.title }}</div>
-      <div class="cardsDescription">{{ card.description }}</div>
-      <div class="cardsRating gradation">{{ ratingData(card.rating) }}</div>
-      <div class="cardsDate">{{ setYear(card.timestamp) }}/{{ setMonth(card.timestamp) }}/{{ setDay(card.timestamp) }} {{ setHour(card.timestamp) }}:{{ setMinute(card.timestamp) }}</div>
+      <li class="cardsTitle">{{ card.title }}</li>
+      <li class="cardsDescription">{{ card.description }}</li>
+      <li class="cardsRating gradation">{{ ratingData(card.rating) }}</li>
+      <li class="cardsDate">{{ setYear(card.timestamp) }}/{{ setMonth(card.timestamp) }}/{{ setDay(card.timestamp) }} {{ setHour(card.timestamp) }}:{{ setMinute(card.timestamp) }}</li>
 
-      <edit-memo :edittingCard="cardsArray[index]" @editedCabin="getEditedMemo" class="editButton"></edit-memo>  
-      <!-- ↑編集：子コンポーネントに対象オブジェクトを渡し、編集後オブジェクトを受け取る -->
+      <edit-memo :editingCard="cardsArray[index]" @editedCabin="getEditedMemo" class="editButton"></edit-memo>  
+      <delete-memo :deletingCardId="cardsArray[index].id" @deletingCard="getDeletedId"></delete-memo>
+
     </div>
   </section>
 </template>
 <script>
 import EditMemo from './EditMemo.vue'
+import DeleteMemo from './DeleteMemo.vue'
 export default {
   name: 'MemoCards',
   props: {
@@ -29,25 +31,26 @@ export default {
   data() {
     return {
       editedMemo : {},
-      sortCardsBy : 'stars'
+      deletingId : {},
+      sortCardsBy : 'date'
     }
   },
   computed: {
     /* propsの配列（表示用メモデータ）をコピーし、各基準の降順に並べ替え */
     cardsArray: function() {
-      if (this.sortCardsBy === 'stars') {
-        return Array.from(this.cards).sort((a,b) => 
-        b.rating - a.rating )
-      } else {
+      if (this.sortCardsBy === 'date') {
         return Array.from(this.cards).sort((a,b) => 
         b.timestamp - a.timestamp )
+      } else {
+        return Array.from(this.cards).sort((a,b) => 
+        b.rating - a.rating )
       }
     },
     setYear: () => (timedata) => timedata.getFullYear(),
     setMonth: () => (timedata) => timedata.getMonth()+1,
     setDay: () => (timedata) => timedata.getDate(),
     setHour: () => (timedata) => timedata.getHours(),
-    setMinute: () => (timedata) => timedata.getMinutes(), //TODO: 2桁表記に修正する
+    setMinute: () => (timedata) => timedata.getMinutes().toString().padStart(2,'0'),
     ratingData: function() {
       return function(rateData) {
       if (rateData == 5) {
@@ -65,15 +68,21 @@ export default {
     },
   },
   methods: {
-    /* 孫から編集後オブジェクトを受け取り、親にemit */
+    /* 孫から編集,削除オブジェクトを受け取り、親にemit */
     getEditedMemo(value) {
       this.editedMemo = value
       this.$emit('editedCard', this.editedMemo)
       this.editedMemo = null
-    }
+    },
+    getDeletedId(value) {
+      this.deletingId = value
+      this.$emit('deletedId', this.deletingId)
+      this.deletingId = null
+    },
   },
   components: {
-    EditMemo
+    EditMemo,
+    DeleteMemo
   }
 }
 </script>
@@ -97,11 +106,15 @@ export default {
 }
 /* カードのスタイル */
 .cards {
-  display: block;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  margin: 1rem auto;
   background-color: #fff;
   position: relative;
   border-radius: 5px;
   padding-bottom: 1rem;
+  box-shadow: -0.5rem 0.5rem 2rem -2rem rgb(70, 70, 70);
 }
 .cardsTitle {
   display: block;
@@ -142,8 +155,7 @@ export default {
 /* 編集ボタンの位置 */
 .editButton {
   position: absolute;
-  bottom: 2rem;
-  top: 16%;
+  bottom: 2%;
   right: 5%;
 }
 </style>

@@ -6,15 +6,15 @@
         <h2 class="gradation">Edit Your Note!</h2>
         <button class="closeButton" @click="closeModal">close</button>
         <form class="row">
-          <textarea v-model="EditingText.title" placeholder="Title" class="inputText"></textarea>
+          <textarea v-model="editingText.title" placeholder="Title" class="inputText"></textarea>
 
           <div class="flexTextarea">
-            <div aria-hidden="true">{{ EditingText.description }}</div>
-            <textarea v-model="EditingText.description" placeholder="Description" class="inputText"></textarea>
+            <div aria-hidden="true">{{ editingText.description }}</div>
+            <textarea v-model="editingText.description" placeholder="Description" class="inputText"></textarea>
           </div>
 
           <label for="rating">How many stars?</label>
-          <select id="rating" v-model.number="EditingText.rating">
+          <select id="rating" v-model.number="editingText.rating">
             <option value="5">★★★★★</option>
             <option value="4">★★★★・</option>
             <option value="3">★★★・・</option>
@@ -33,12 +33,11 @@
 export default {
 name: 'EditMemo',
 props: {
-  edittingCard: {},
+  editingCard: {},
 },
   data(){
     return {
-      cabin: {},
-      EditingText: {
+      editingText: {
         title: '',
         description: '',
         rating: '',
@@ -53,27 +52,28 @@ props: {
     /* 編集後メモオブジェクトをeditedCabinに乗せてemit */
     addCard() {
       this.cabinCard = {
-        title: this.EditingText.title,
-        description: this.EditingText.description,
-        rating: this.EditingText.rating,
+        title: this.editingText.title,
+        description: this.editingText.description,
+        rating: this.editingText.rating,
         timestamp: new Date(),
-        id: this.edittingCard.id,
+        id: this.editingCard.id,  //IDは元のまま保持する
       }
       this.$emit('editedCabin', this.cabinCard)
+      this.cabinCard = null
       this.clearEditingText()
       this.closeModal()
     },
     /* フォームの初期化 */
     clearEditingText() {
-      this.EditingText.title = null
-      this.EditingText.description = null
-      this.EditingText.rating = null
+      this.editingText.title = null
+      this.editingText.description = null
+      this.editingText.rating = null
     },
     /* 編集対象オブジェクトをフォームにセット */
     setCard() {
-      this.EditingText.title = this.edittingCard.title
-      this.EditingText.description = this.edittingCard.description
-      this.EditingText.rating = this.edittingCard.rating
+      this.editingText.title = this.editingCard.title
+      this.editingText.description = this.editingCard.description
+      this.editingText.rating = this.editingCard.rating
     },
     /* モーダル開閉 */
     openModal() {
@@ -82,15 +82,18 @@ props: {
     },
     closeModal() {
       this.showContent = false
+      this.clearEditingText()
     }
   }
 }
 </script>
 <style scoped>
+.content {
+  text-align: center;  
+}
 .content h2 {
   display: block;
   width: 15rem;
-  text-align: center;
   margin: 0 auto;
 }
 textarea,button,select {
@@ -101,7 +104,7 @@ textarea,button,select {
 label {
   color: rgb(70, 70, 70);
 }
-/* モーダルを閉じるボタン */
+/* モーダルを閉じるボタン配置 */
 .closeButton {
   position: absolute;
   top: 0;
