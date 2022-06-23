@@ -84,6 +84,15 @@ body {
   margin: 0 5%;
   font-family: tahoma;
   text-align: center;
+  color: rgb(70, 70, 70)
+}
+button {
+  border: none;
+  font-weight: bold;
+  color: rgb(70, 70, 70)
+}
+h2 {
+  padding-top: 1rem;
 }
 .row {
   display: grid;
@@ -98,7 +107,7 @@ body {
 }
 /* モーダル */
 .overlay {
-  z-index: 1;
+  z-index: 10;
   position: fixed;
   top: 0;
   left: 0;
@@ -110,7 +119,7 @@ body {
   justify-content: center;
 }
 .content {
-  z-index: 2;
+  z-index: 100;
   width: 75%;
   padding: 1rem;
   background: #fff;
@@ -145,7 +154,8 @@ body {
   border-radius: 100% 80px /85px 100%;
 }
 .unduration:hover {
-  color: #fff;
+  font-size: 1.41rem;
+  color: azure;
   border-radius: 60% 100px /100% 85%;
 }
 .pastel {

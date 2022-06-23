@@ -4,7 +4,7 @@
     <div class="overlay" v-show="showContent">
       <div class="content">
         <h2 class="gradation">Edit Your Note!</h2>
-        <button class="closeButton" @click="closeModal">close</button>
+        <button class="closeButton" @click="closeModal">x</button>
         <form class="row">
           <textarea v-model="editingText.title" placeholder="Title" class="inputText"></textarea>
 
@@ -109,6 +109,9 @@ label {
   position: absolute;
   top: 0;
   right: 0;
+  border-radius: 5px;
+  color: rgb(70, 70, 70);
+  text-align: center;
 }
 /* 文字量に応じて伸縮するテキストボックス */
 .flexTextarea {

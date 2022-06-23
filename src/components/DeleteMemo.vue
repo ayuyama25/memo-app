@@ -1,12 +1,12 @@
 <template>
   <section>
-    <button @click="openModal">Delete</button>
-    <div class="overlay" v-show="showContent">
+    <button class="deleteButton" @click="openModal">x</button>
+    <div class="overlay" v-show="showContent" @click.self="closeModal">
       <div class="content">
         <h3 class="gradation">{{ title }}</h3>
         <div>{{ message }}</div>
-        <button @click="deleting"> OK</button>
-        <button @click="closeModal">Cancel</button>
+        <button class="options" @click="deleting"> OK</button>
+        <button class="options" @click="closeModal">Cancel</button>
       </div>
     </div>
   </section>
@@ -42,5 +42,17 @@ export default {
 </script>
 
 <style scoled>
-
+h3 {
+  padding: 1rem 0;
+}
+.deleteButton {
+  border-radius: 50%;
+  color: rgb(70, 70, 70);
+  text-align: center;
+  opacity: 0.9;
+}
+.options {
+  margin: 1.25rem;
+  padding: 0.5rem;
+}
 </style>

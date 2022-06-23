@@ -8,14 +8,15 @@
       <label for="byDate">Date</label>
     </form>
 
-    <div class="row cards" v-for="(card, index) in cardsArray" :key ="index">
+    <div class="row cards" :class="[index === hoveredIndex ? 'hover' : '']" v-for="(card, index) in cardsArray" :key ="index" @mouseover="hovering(index)" @mouseleave="mouseOff">
+
       <li class="cardsTitle">{{ card.title }}</li>
       <li class="cardsDescription">{{ card.description }}</li>
       <li class="cardsRating gradation">{{ ratingData(card.rating) }}</li>
       <li class="cardsDate">{{ setYear(card.timestamp) }}/{{ setMonth(card.timestamp) }}/{{ setDay(card.timestamp) }} {{ setHour(card.timestamp) }}:{{ setMinute(card.timestamp) }}</li>
 
       <edit-memo :editingCard="cardsArray[index]" @editedCabin="getEditedMemo" class="editButton"></edit-memo>  
-      <delete-memo :deletingCardId="cardsArray[index].id" @deletingCard="getDeletedId"></delete-memo>
+      <delete-memo :deletingCardId="cardsArray[index].id" @deletingCard="getDeletedId" class="deleteButton"></delete-memo>
 
     </div>
   </section>
@@ -32,7 +33,8 @@ export default {
     return {
       editedMemo : {},
       deletingId : {},
-      sortCardsBy : 'date'
+      sortCardsBy : 'date',
+      hoveredIndex : null
     }
   },
   computed: {
@@ -68,6 +70,13 @@ export default {
     },
   },
   methods: {
+    /* カードにCSS（hover）を付与 */
+    hovering(value) {
+      this.hoveredIndex = value
+    },
+    mouseOff() {
+      this.hoveredIndex = null
+    },
     /* 孫から編集,削除オブジェクトを受け取り、親にemit */
     getEditedMemo(value) {
       this.editedMemo = value
@@ -134,7 +143,6 @@ export default {
   padding: 1rem 3rem;
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: rgb(70, 70, 70)
 }
 .cardsRating {
   position: relative;
@@ -142,7 +150,6 @@ export default {
   display: inline-block;
   font-size: 1rem;
   padding: 0.6rem 0;
-  color: rgb(70, 70, 70)
 }
 .cardsDate {
   position: absolute;
@@ -150,12 +157,30 @@ export default {
   right: 5%;
   display: inline-block;
   font-size: 0.8rem; 
-  color: rgb(70, 70, 70)
+}
+/* マウスホバー */
+.hover {
+  transform: all 0.3s;
+  box-shadow: -1rem 1rem 2.5rem -2rem rgb(70, 70, 70);
 }
 /* 編集ボタンの位置 */
 .editButton {
   position: absolute;
   bottom: 2%;
   right: 5%;
+  opacity: 0.8;
+}
+.editButton:hover {
+  opacity: 1;
+}
+/* 削除ボタンの位置 */
+.deleteButton {
+  position: absolute;
+  top: 2rem;
+  right: 0.5rem;
+  opacity: 0.6;
+}
+.deleteButton:hover {
+  opacity: 1;
 }
 </style>
