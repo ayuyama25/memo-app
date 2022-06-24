@@ -10,7 +10,7 @@
 
     <div class="row cards" :class="[index === hoveredIndex ? 'hover' : '']" v-for="(card, index) in cardsArray" :key ="index" @mouseover="hovering(index)" @mouseleave="mouseOff">
 
-      <li class="cardsTitle">{{ card.title }}</li>
+      <li class="cardsTitle" :class="[index === hoveredIndex ? 'hoverTitle' : '']">{{ card.title }}</li>
       <li class="cardsDescription">{{ card.description }}</li>
       <li class="cardsRating gradation">{{ ratingData(card.rating) }}</li>
       <li class="cardsDate">{{ setYear(card.timestamp) }}/{{ setMonth(card.timestamp) }}/{{ setDay(card.timestamp) }} {{ setHour(card.timestamp) }}:{{ setMinute(card.timestamp) }}</li>
@@ -119,7 +119,11 @@ export default {
   width: 100%;
   height: 100%;
   margin: 1rem auto;
-  background-color: #fff;
+
+background: #00b09b;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #96c93d, #00b09b);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   position: relative;
   border-radius: 5px;
   padding-bottom: 1rem;
@@ -128,13 +132,19 @@ export default {
 .cardsTitle {
   display: block;
   position: relative;
-  background-color: plum;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10%);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
   color: azure;
   text-align: center;
+  margin: 0.5rem 0.5rem 0 0.5rem;
   padding: 3rem;
-  border-radius: 5px 5px 0 0;
+  border-radius: 5px;
   font-size: 1.4rem;
   font-weight: 600;
+  text-shadow: -1px 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: -0.5rem 0.5rem 2rem -2rem rgb(70, 70, 70);
 }
 .cardsDescription {
   position: relative;
@@ -148,7 +158,7 @@ export default {
   position: relative;
   left: 3rem;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding: 0.6rem 0;
 }
 .cardsDate {
@@ -156,29 +166,37 @@ export default {
   top: 5%;
   right: 5%;
   display: inline-block;
+  color: azure;
   font-size: 0.8rem; 
+  text-shadow: -1px 1px 4px rgba(0, 0, 0, 0.3);
 }
-/* マウスホバー */
+/* カードへのマウスホバー */
 .hover {
-  transform: all 0.3s;
+  transition: all 0.3s ease-out;
   box-shadow: -1rem 1rem 2.5rem -2rem rgb(70, 70, 70);
 }
-/* 編集ボタンの位置 */
+.hoverTitle {
+  background-color: rgba(255, 255, 255, 0.35);
+  transition: all 0.3s ease-out;
+}
+/* 編集ボタンの位置、イベント */
 .editButton {
   position: absolute;
   bottom: 2%;
   right: 5%;
+  transition: all 0.2s ease-out;
   opacity: 0.8;
 }
 .editButton:hover {
   opacity: 1;
 }
-/* 削除ボタンの位置 */
+/* 削除ボタンの位置、イベント */
 .deleteButton {
   position: absolute;
   top: 2rem;
-  right: 0.5rem;
-  opacity: 0.6;
+  right: 1rem;
+  transition: all 0.1s ease-out;
+  opacity: 0.8;
 }
 .deleteButton:hover {
   opacity: 1;

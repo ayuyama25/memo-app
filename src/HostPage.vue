@@ -80,7 +80,7 @@ export default {
 </script>
 <style>
 body {
-  background-color: #f2f2f2;
+  background-color: WhiteSmoke;
   margin: 0 5%;
   font-family: tahoma;
   text-align: center;
@@ -89,7 +89,8 @@ body {
 button {
   border: none;
   font-weight: bold;
-  color: rgb(70, 70, 70)
+  color: rgb(70, 70, 70);
+  border-radius: 5px;
 }
 h2 {
   padding-top: 1rem;
@@ -113,7 +114,7 @@ h2 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +123,9 @@ h2 {
   z-index: 100;
   width: 75%;
   padding: 1rem;
-  background: #fff;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: -2rem 2rem 3rem -6px rgba(0, 0, 0, 0.3);
 }
 /* 文字グラデーション */
 .gradation {
@@ -144,7 +147,7 @@ h2 {
   letter-spacing: 0.1em;
   line-height: 1.5;
   user-select: none;
-  transition: all 0.3s;
+  transition: all 0.3s ease-out;
   border: none;
 }
 .unduration {
@@ -152,16 +155,19 @@ h2 {
   padding: 4rem;
   color: #fff;
   border-radius: 100% 80px /85px 100%;
+  text-shadow: none;
 }
 .unduration:hover {
-  font-size: 1.41rem;
+/*   font-size: 1.41rem; */
   color: azure;
-  border-radius: 60% 100px /100% 85%;
+  border-radius: 60% 150px /100% 85px;
+  border-right: 1px solid rgba(255, 255, 255, 0.8);
+  text-shadow: 0px 0px 1px #fff;
 }
 .pastel {
   background-color: plum;
   background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
   background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  box-shadow: 10px 7px 10px azure;
+  box-shadow: 1px 3px 18px azure;
 }
 </style>
