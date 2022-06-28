@@ -21,15 +21,20 @@
             <option value="2">★★・・・</option>
             <option value="1">★・・・・</option>
           </select>
+
+          <set-theme ref="themeSetting" @cardsTheme="setEditTheme" :defaultTheme="editingCard.themeColor"></set-theme>
+
           <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">Done !!</button>
+          <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
         </form>
-        <button @click="closeModal">cancel</button>
+        <button class="cancelButton" @click="closeModal">cancel</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import SetTheme from './SetTheme.vue'
 export default {
 name: 'EditMemo',
 props: {
@@ -42,26 +47,35 @@ props: {
         description: '',
         rating: '',
         timestamp: '',
-        id: ''
+        themeColor: ''
       },
+      editingTheme: 'Default',
       cabinCard: {},
       showContent: false,
+      errorMessage: false,
     }
   },
   methods: {
     /* 編集後メモオブジェクトをeditedCabinに乗せてemit */
     addCard() {
-      this.cabinCard = {
-        title: this.editingText.title,
-        description: this.editingText.description,
-        rating: this.editingText.rating,
-        timestamp: new Date(),
-        id: this.editingCard.id,  //IDは元のまま保持する
+      if (this.editingText.title || this.editingText.description) {
+        this.cabinCard = {
+          title: this.editingText.title,
+          description: this.editingText.description,
+          rating: this.editingText.rating,
+          timestamp: new Date(),
+          id: this.editingCard.id,  //IDは元のまま保持する
+          themeColor: this.editingTheme
+        }
+        this.$emit('editedCabin', this.cabinCard)
+        this.cabinCard = null
+        this.$refs.themeSetting.clearTheme()
+        this.clearEditingText()
+        this.closeModal()
+      } else {
+        this.errorMessage = true
+        setTimeout(() => {this.errorMessage = false},500)
       }
-      this.$emit('editedCabin', this.cabinCard)
-      this.cabinCard = null
-      this.clearEditingText()
-      this.closeModal()
     },
     /* フォームの初期化 */
     clearEditingText() {
@@ -74,6 +88,11 @@ props: {
       this.editingText.title = this.editingCard.title
       this.editingText.description = this.editingCard.description
       this.editingText.rating = this.editingCard.rating
+      this.$refs.themeSetting.setEditingTheme()
+    },
+    /* 編集後テーマを回収してセット */
+    setEditTheme(value) {
+      this.editingTheme = value
     },
     /* モーダル開閉 */
     openModal() {
@@ -84,6 +103,9 @@ props: {
       this.showContent = false
       this.clearEditingText()
     }
+  },
+  components: {
+    SetTheme,
   }
 }
 </script>
@@ -112,6 +134,9 @@ label {
   border-radius: 5px;
   color: rgb(70, 70, 70);
   text-align: center;
+}
+.cancelButton {
+  float: left;
 }
 /* 文字量に応じて伸縮するテキストボックス */
 .flexTextarea {
@@ -148,5 +173,11 @@ label {
 .inputText {
   font-size: 1.1rem;
   font-family: tahoma;
+}
+/* 空白メッセージ */
+.errorMessage {
+  font-size: 0.8rem;
+  color: tomato;
+  text-align: start;
 }
 </style>

@@ -22,16 +22,18 @@
             <option value="1">★・・・・</option>
           </select>
 
+          <set-theme ref="themeSetting" @cardsTheme="settingTheme"></set-theme>
           <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">GO !!</button>
           <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
         </form>
-        <button @click="closeModal">cancel</button>
+        <button class="cancelButton" @click="closeModal">cancel</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import SetTheme from './SetTheme.vue'
 export default {
   name: 'NewMemo',
   props: { //新規ID取得getNewId()メソッドで使用
@@ -45,11 +47,13 @@ export default {
         rating: '',
         timestamp: '',
         id: '',
+        themeColor: '',
       },
       cabinCard: {},
       showContent: false,
       errorMessage: false,
-      idSerch: new Map()
+      idSerch: new Map(),
+      themeOfCard: 'Default'
     }
   },
   methods: {
@@ -61,18 +65,17 @@ export default {
           description: this.textInput.description,
           rating: this.textInput.rating,
           timestamp: new Date(),
-          id: this.getNewId(this.cards)
+          id: this.getNewId(this.cards),
+          themeColor: this.themeOfCard
         }
         this.$emit('memoCabin', this.cabinCard )
         this.closeModal()        
         this.idSerch = null
         this.cabinCard = null
+        this.$refs.themeSetting.clearTheme()
       } else {
         this.errorMessage = true
-        setTimeout(() => {
-          this.errorMessage = false }
-          ,500
-        )
+        setTimeout(() => {this.errorMessage = false },500)
       }
     },
     /* id付与 */
@@ -83,6 +86,10 @@ export default {
         this.idSerch = cardsData.map((card) => card.id)
         return Math.max(...this.idSerch) + 1
       }
+    },
+    /* テーマセット */
+    settingTheme(theme) {
+      return this.themeOfCard = theme
     },
     /* テキストボックス入力値の初期化 */
     clearTextImput() {
@@ -99,11 +106,14 @@ export default {
       this.showContent = false
       this.clearTextImput()
     }
+  },
+  components: {
+    SetTheme
   }
 }
 </script>
 <style scoped>
-/* ボタンインタラクションはHostPageに配置、全ボタン共通 */
+/* ボタンインタラクションはHostPageに配置(共通) */
 .TopInputButton {
   position: relative;
   display: inline-block;
@@ -117,7 +127,6 @@ export default {
   transition: all 0.3s;
   border: none;
 }
-
 .content h2 {
   display: block;
   width: 17rem;
@@ -131,6 +140,7 @@ textarea,button,select {
 }
 label {
   color: rgb(70, 70, 70);
+  padding-right: 0.5rem;
 }
 /* モーダルを閉じるボタン */
 .closeButton {
@@ -140,6 +150,10 @@ label {
   border-radius: 5px;
   color: rgb(70, 70, 70);
   text-align: center;
+}
+/* キャンセルボタン */
+.cancelButton {
+  float: left;
 }
 /* 文字量に応じて伸縮するテキストボックス */
 .flexTextarea {

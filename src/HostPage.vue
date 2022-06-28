@@ -13,7 +13,7 @@
   </div>
   <div class="row">
     <div class="memo-cards-div">
-      <memo-cards :cards="notes" @editedCard="editingCard" @deletedId="getDeleted"></memo-cards>
+      <memo-cards :cards="notes" :optionTheme="defaultColor" @editedCard="editingCard" @deletedId="getDeleted"></memo-cards>
     </div>
   </div>
 </section>
@@ -35,9 +35,11 @@ export default {
         description: '-  Press the "Post new memo!" to start -',
         rating: 0,
         timestamp: new Date(),
-        id: '0'
+        id: '0',
+        themeColor: 'Default',
         },
       ],
+      defaultColor: 'happiness',
       newNotes: {},
       changeCard: {},
       targetIndex: '',
@@ -58,6 +60,7 @@ export default {
       this.notes[this.targetIndex].description = this.changeCard.description
       this.notes[this.targetIndex].rating = this.changeCard.rating
       this.notes[this.targetIndex].timestamp = this.changeCard.timestamp
+      this.notes[this.targetIndex].themeColor = this.changeCard.themeColor
       this.targetIndex = null
       this.changeCard = null
       return this.notes
@@ -91,6 +94,13 @@ button {
   font-weight: bold;
   color: rgb(70, 70, 70);
   border-radius: 5px;
+  opacity: 0.9;
+  transition: all 0.2s ease-out;
+}
+button:hover {
+  opacity: 1;
+  outline: 1px dotted #fff;
+  outline-offset: -1px;
 }
 h2 {
   padding-top: 1rem;
@@ -136,10 +146,10 @@ h2 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-/* グラデーションボタンインタラクション -共通 */
+/* グラデーションボタン -共通 */
 .inputButton {
   position: relative;
-  display: inline-block;
+  display: block;
   margin-top: 1rem;
   cursor: pointer;
   text-align: center;
@@ -158,7 +168,6 @@ h2 {
   text-shadow: none;
 }
 .unduration:hover {
-/*   font-size: 1.41rem; */
   color: azure;
   border-radius: 60% 150px /100% 85px;
   border-right: 1px solid rgba(255, 255, 255, 0.8);
@@ -169,5 +178,31 @@ h2 {
   background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
   background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
   box-shadow: 1px 3px 18px azure;
+}
+/* カードの色テーマ */
+.happiness {
+  background: #00b09b;
+  background: -webkit-linear-gradient(to left, #96c93d, #00b09b);
+  background: linear-gradient(to left, #96c93d, #00b09b);
+}
+.lagoon {
+  background: #74ebd5;
+  background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);
+  background: linear-gradient(to right, #ACB6E5, #74ebd5);
+}
+.blossom {
+  background: #FBD3E9;
+  background: -webkit-linear-gradient(to left, #BB377D, #FBD3E9);
+  background: linear-gradient(to right, #BB377D, #FBD3E9);
+}
+.moon {
+  background: #ddd6f3;
+  background: -webkit-linear-gradient(to right, #faaca8, #ddd6f3); 
+  background: linear-gradient(to right, #faaca8, #ddd6f3);
+}
+.goodday {
+  background: #FF4E50;
+  background: -webkit-linear-gradient(to left, #F9D423, #FF4E50);
+  background: linear-gradient(to left, #F9D423, #FF4E50);
 }
 </style>
