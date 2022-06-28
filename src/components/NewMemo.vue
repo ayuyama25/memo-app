@@ -1,6 +1,7 @@
 <template>
   <section>
     <button class="TopInputButton unduration pastel" @click="openModal">Post new memo!</button>
+    <transition name="modal-transition">
     <div class="overlay" v-show="showContent">
       <div class="content">
         <h2 class="gradation">Create Your Note!</h2>
@@ -28,6 +29,7 @@
         <button @click="closeModal">cancel</button>
       </div>
     </div>
+    </transition>
   </section>
 </template>
 

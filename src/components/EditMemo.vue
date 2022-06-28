@@ -1,6 +1,7 @@
 <template>
   <section>
     <button @click="openModal">Edit</button>
+    <transition name="modal-transition">
     <div class="overlay" v-show="showContent">
       <div class="content">
         <h2 class="gradation">Edit Your Note!</h2>
@@ -26,6 +27,7 @@
         <button @click="closeModal">cancel</button>
       </div>
     </div>
+    </transition>
   </section>
 </template>
 
