@@ -4,76 +4,95 @@
     <div class="overlay" v-show="showContent">
       <div class="content">
         <h2 class="gradation">Edit Your Note!</h2>
-        <button class="closeButton" @click="closeModal">close</button>
+        <button class="closeButton" @click="closeModal">x</button>
         <form class="row">
-          <textarea v-model="EditingText.title" placeholder="Title" class="inputText"></textarea>
+          <textarea v-model="editingText.title" placeholder="Title" class="inputText"></textarea>
 
           <div class="flexTextarea">
-            <div aria-hidden="true">{{ EditingText.description }}</div>
-            <textarea v-model="EditingText.description" placeholder="Description" class="inputText"></textarea>
+            <div aria-hidden="true">{{ editingText.description }}</div>
+            <textarea v-model="editingText.description" placeholder="Description" class="inputText"></textarea>
           </div>
 
           <label for="rating">How many stars?</label>
-          <select id="rating" v-model.number="EditingText.rating">
+          <select id="rating" v-model.number="editingText.rating">
             <option value="5">★★★★★</option>
             <option value="4">★★★★・</option>
             <option value="3">★★★・・</option>
             <option value="2">★★・・・</option>
             <option value="1">★・・・・</option>
           </select>
+
+          <set-theme ref="themeSetting" @cardsTheme="setEditTheme" :defaultTheme="editingCard.themeColor"></set-theme>
+
           <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">Done !!</button>
+          <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
         </form>
-        <button @click="closeModal">cancel</button>
+        <button class="cancelButton" @click="closeModal">cancel</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import SetTheme from './SetTheme.vue'
 export default {
 name: 'EditMemo',
 props: {
-  edittingCard: {},
+  editingCard: {},
 },
   data(){
     return {
-      cabin: {},
-      EditingText: {
+      editingText: {
         title: '',
         description: '',
         rating: '',
         timestamp: '',
-        id: ''
+        themeColor: ''
       },
+      editingTheme: 'Default',
       cabinCard: {},
       showContent: false,
+      errorMessage: false,
     }
   },
   methods: {
     /* 編集後メモオブジェクトをeditedCabinに乗せてemit */
     addCard() {
-      this.cabinCard = {
-        title: this.EditingText.title,
-        description: this.EditingText.description,
-        rating: this.EditingText.rating,
-        timestamp: new Date(),
-        id: this.edittingCard.id,
+      if (this.editingText.title || this.editingText.description) {
+        this.cabinCard = {
+          title: this.editingText.title,
+          description: this.editingText.description,
+          rating: this.editingText.rating,
+          timestamp: new Date(),
+          id: this.editingCard.id,  //IDは元のまま保持する
+          themeColor: this.editingTheme
+        }
+        this.$emit('editedCabin', this.cabinCard)
+        this.cabinCard = null
+        this.$refs.themeSetting.clearTheme()
+        this.clearEditingText()
+        this.closeModal()
+      } else {
+        this.errorMessage = true
+        setTimeout(() => {this.errorMessage = false},500)
       }
-      this.$emit('editedCabin', this.cabinCard)
-      this.clearEditingText()
-      this.closeModal()
     },
     /* フォームの初期化 */
     clearEditingText() {
-      this.EditingText.title = null
-      this.EditingText.description = null
-      this.EditingText.rating = null
+      this.editingText.title = null
+      this.editingText.description = null
+      this.editingText.rating = null
     },
     /* 編集対象オブジェクトをフォームにセット */
     setCard() {
-      this.EditingText.title = this.edittingCard.title
-      this.EditingText.description = this.edittingCard.description
-      this.EditingText.rating = this.edittingCard.rating
+      this.editingText.title = this.editingCard.title
+      this.editingText.description = this.editingCard.description
+      this.editingText.rating = this.editingCard.rating
+      this.$refs.themeSetting.setEditingTheme()
+    },
+    /* 編集後テーマを回収してセット */
+    setEditTheme(value) {
+      this.editingTheme = value
     },
     /* モーダル開閉 */
     openModal() {
@@ -82,15 +101,21 @@ props: {
     },
     closeModal() {
       this.showContent = false
+      this.clearEditingText()
     }
+  },
+  components: {
+    SetTheme,
   }
 }
 </script>
 <style scoped>
+.content {
+  text-align: center;  
+}
 .content h2 {
   display: block;
   width: 15rem;
-  text-align: center;
   margin: 0 auto;
 }
 textarea,button,select {
@@ -101,11 +126,17 @@ textarea,button,select {
 label {
   color: rgb(70, 70, 70);
 }
-/* モーダルを閉じるボタン */
+/* モーダルを閉じるボタン配置 */
 .closeButton {
   position: absolute;
   top: 0;
   right: 0;
+  border-radius: 5px;
+  color: rgb(70, 70, 70);
+  text-align: center;
+}
+.cancelButton {
+  float: left;
 }
 /* 文字量に応じて伸縮するテキストボックス */
 .flexTextarea {
@@ -142,5 +173,11 @@ label {
 .inputText {
   font-size: 1.1rem;
   font-family: tahoma;
+}
+/* 空白メッセージ */
+.errorMessage {
+  font-size: 0.8rem;
+  color: tomato;
+  text-align: start;
 }
 </style>

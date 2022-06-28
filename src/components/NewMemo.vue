@@ -1,10 +1,10 @@
 <template>
   <section>
-    <button class="inputButton unduration pastel" @click="openModal">Post new memo!</button>
+    <button class="TopInputButton unduration pastel" @click="openModal">Post new memo!</button>
     <div class="overlay" v-show="showContent">
       <div class="content">
         <h2 class="gradation">Create Your Note!</h2>
-        <button class="closeButton" @click="closeModal">close</button>
+        <button class="closeButton" @click="closeModal">x</button>
         <form class="row">
           <textarea v-model="textInput.title" placeholder="Title.." class="inputText"></textarea>
 
@@ -22,15 +22,18 @@
             <option value="1">★・・・・</option>
           </select>
 
+          <set-theme ref="themeSetting" @cardsTheme="settingTheme"></set-theme>
           <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">GO !!</button>
+          <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
         </form>
-        <button @click="closeModal">cancel</button>
+        <button class="cancelButton" @click="closeModal">cancel</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import SetTheme from './SetTheme.vue'
 export default {
   name: 'NewMemo',
   props: { //新規ID取得getNewId()メソッドで使用
@@ -44,10 +47,13 @@ export default {
         rating: '',
         timestamp: '',
         id: '',
+        themeColor: '',
       },
       cabinCard: {},
       showContent: false,
-      idSerch: new Map()
+      errorMessage: false,
+      idSerch: new Map(),
+      themeOfCard: 'Default'
     }
   },
   methods: {
@@ -59,19 +65,31 @@ export default {
           description: this.textInput.description,
           rating: this.textInput.rating,
           timestamp: new Date(),
-          id: this.getNewId(this.cards)
+          id: this.getNewId(this.cards),
+          themeColor: this.themeOfCard
         }
         this.$emit('memoCabin', this.cabinCard )
+        this.closeModal()        
         this.idSerch = null
         this.cabinCard = null
-        this.clearTextImput()
-        this.closeModal()
+        this.$refs.themeSetting.clearTheme()
+      } else {
+        this.errorMessage = true
+        setTimeout(() => {this.errorMessage = false },500)
       }
     },
     /* id付与 */
     getNewId(cardsData) {
-      this.idSerch = cardsData.map((card) => card.id)
-      return Math.max(...this.idSerch) + 1
+      if (this.cards.length == 0 ) {
+        return 0
+      } else {
+        this.idSerch = cardsData.map((card) => card.id)
+        return Math.max(...this.idSerch) + 1
+      }
+    },
+    /* テーマセット */
+    settingTheme(theme) {
+      return this.themeOfCard = theme
     },
     /* テキストボックス入力値の初期化 */
     clearTextImput() {
@@ -88,10 +106,27 @@ export default {
       this.showContent = false
       this.clearTextImput()
     }
+  },
+  components: {
+    SetTheme
   }
 }
 </script>
 <style scoped>
+/* ボタンインタラクションはHostPageに配置(共通) */
+.TopInputButton {
+  position: relative;
+  display: inline-block;
+  width: 19rem;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 3.5;
+  user-select: none;
+  transition: all 0.3s;
+  border: none;
+}
 .content h2 {
   display: block;
   width: 17rem;
@@ -105,12 +140,20 @@ textarea,button,select {
 }
 label {
   color: rgb(70, 70, 70);
+  padding-right: 0.5rem;
 }
 /* モーダルを閉じるボタン */
 .closeButton {
   position: absolute;
   top: 0;
   right: 0;
+  border-radius: 5px;
+  color: rgb(70, 70, 70);
+  text-align: center;
+}
+/* キャンセルボタン */
+.cancelButton {
+  float: left;
 }
 /* 文字量に応じて伸縮するテキストボックス */
 .flexTextarea {
@@ -147,5 +190,11 @@ label {
 .inputText {
   font-size: 1.1rem;
   font-family: tahoma;
+}
+/* 空白メッセージ */
+.errorMessage {
+  font-size: 0.8rem;
+  color: tomato;
+  text-align: start;
 }
 </style>
