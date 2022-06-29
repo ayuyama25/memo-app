@@ -70,6 +70,7 @@ export default {
         this.closeModal()
         this.idSerch = null
         this.cabinCard = null
+        this.$refs.themeSetting.clearTheme()
       } else {
         this.errorMessage = true
         setTimeout(() => {this.errorMessage = false },500)
