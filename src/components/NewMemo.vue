@@ -14,19 +14,14 @@
             <textarea v-model="textInput.description" placeholder="Description.." class="inputText"></textarea>
           </div>
 
-          <label for="rating">How many stars?</label>
-          <select id="rating" v-model.number="textInput.rating">
-            <option value="5">★★★★★</option>
-            <option value="4">★★★★・</option>
-            <option value="3">★★★・・</option>
-            <option value="2">★★・・・</option>
-            <option value="1">★・・・・</option>
-          </select>
+          <star-memo ref="starSetting" @starCabin="newStarSet"></star-memo>
 
-          <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">GO !!</button>
+          <set-theme ref="themeSetting" @cardsTheme="setNewTheme"></set-theme>
+          
+          <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">Done !!</button>
           <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
         </form>
-        <button @click="closeModal">cancel</button>
+        <button class="cancelButton" @click="closeModal">cancel</button>
       </div>
     </div>
     </transition>
@@ -34,6 +29,8 @@
 </template>
 
 <script>
+import SetTheme from './SetTheme.vue'
+import StarMemo from './StarMemo.vue'
 export default {
   name: 'NewMemo',
   props: { //新規ID取得getNewId()メソッドで使用
@@ -47,34 +44,35 @@ export default {
         rating: '',
         timestamp: '',
         id: '',
+        themeColor: '',
       },
       cabinCard: {},
       showContent: false,
       errorMessage: false,
-      idSerch: new Map()
+      idSerch: new Map(),
+      themeOfCard: '',
+      rateStars: '',
     }
   },
   methods: {
-    /* 新規メモオブジェクトをmemoCabinに乗せてemit */
+    /* 入力された新規メモオブジェクトをmemoCabinに乗せてemit */
     addCard() {
       if (this.textInput.title || this.textInput.description) {
         this.cabinCard = {
           title: this.textInput.title,
           description: this.textInput.description,
-          rating: this.textInput.rating,
+          rating: this.rateStars,
           timestamp: new Date(),
-          id: this.getNewId(this.cards)
+          id: this.getNewId(this.cards),
+          themeColor: this.themeOfCard
         }
         this.$emit('memoCabin', this.cabinCard )
-        this.closeModal()        
+        this.closeModal()
         this.idSerch = null
         this.cabinCard = null
       } else {
         this.errorMessage = true
-        setTimeout(() => {
-          this.errorMessage = false }
-          ,500
-        )
+        setTimeout(() => {this.errorMessage = false },500)
       }
     },
     /* id付与 */
@@ -86,26 +84,43 @@ export default {
         return Math.max(...this.idSerch) + 1
       }
     },
-    /* テキストボックス入力値の初期化 */
+    /* 子からテーマを取得 */
+    setNewTheme(value) {
+      this.themeOfCard = value
+    },
+    /* 子からレートを取得 */
+    newStarSet(value) {
+      this.rateStars = value
+    },
+    /* フォーム入力値の初期化 */
     clearTextImput() {
       this.textInput.title = null
       this.textInput.description = null
       this.textInput.rating = null
       this.textInput.timestamp = null
+      this.rateStars = null
+      this.themeOfCard = null
+      this.$refs.themeSetting.clearTheme()
+      this.$refs.starSetting.clearStars()
     },
     /* モーダル開閉 */
     openModal() {
       this.showContent = true
+      this.clearTextImput()
     },
     closeModal() {
       this.showContent = false
       this.clearTextImput()
     }
+  },
+  components: {
+    SetTheme,
+    StarMemo,
   }
 }
 </script>
 <style scoped>
-/* ボタンインタラクションはHostPageに配置、全ボタン共通 */
+/* ボタンインタラクションはHostPageに配置(共通) */
 .TopInputButton {
   position: relative;
   display: inline-block;
@@ -119,7 +134,6 @@ export default {
   transition: all 0.3s;
   border: none;
 }
-
 .content h2 {
   display: block;
   width: 17rem;
@@ -133,6 +147,7 @@ textarea,button,select {
 }
 label {
   color: rgb(70, 70, 70);
+  padding-right: 0.5rem;
 }
 /* モーダルを閉じるボタン */
 .closeButton {
@@ -142,6 +157,10 @@ label {
   border-radius: 5px;
   color: rgb(70, 70, 70);
   text-align: center;
+}
+/* キャンセルボタン */
+.cancelButton {
+  float: left;
 }
 /* 文字量に応じて伸縮するテキストボックス */
 .flexTextarea {
@@ -178,6 +197,38 @@ label {
 .inputText {
   font-size: 1.1rem;
   font-family: tahoma;
+}
+/* 星の設定 */
+.starRating {
+  display: flex;
+  flex-direction: row-reverse;
+  overflow: hidden;
+  position: relative;
+  width: 80%;
+  font-size: 2.5rem;
+  margin: 0 auto;
+}
+.starRating input {
+  display: none;
+}
+.starRating label {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.starRating input:checked + label, .starRating input:checked + label ~ label{
+  background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
+  background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.starRating label:hover {
+  -webkit-text-stroke: 1px #fff;
+  transform: calc(1.1);
 }
 /* 空白メッセージ */
 .errorMessage {

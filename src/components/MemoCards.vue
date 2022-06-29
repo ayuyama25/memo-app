@@ -8,8 +8,7 @@
       <label for="byDate">Date</label>
     </form>
 
-    <div class="row cards" :class="[index === hoveredIndex ? 'hover' : '']" v-for="(card, index) in cardsArray" :key ="index" @mouseover="hovering(index)" @mouseleave="mouseOff">
-
+    <div class="row cards" :class="[cssTheme(card.themeColor), index === hoveredIndex ? 'hover' : '']" v-for="(card, index) in cardsArray" :key ="index" @mouseover="hovering(index)" @mouseleave="mouseOff">
       <li class="cardsTitle" :class="[index === hoveredIndex ? 'hoverTitle' : '']">{{ card.title }}</li>
       <li class="cardsDescription">{{ card.description }}</li>
       <li class="cardsRating gradation">{{ ratingData(card.rating) }}</li>
@@ -27,14 +26,15 @@ import DeleteMemo from './DeleteMemo.vue'
 export default {
   name: 'MemoCards',
   props: {
-    cards: Array
+    cards: Array,
+    optionTheme: String
   },
   data() {
     return {
       editedMemo : {},
       deletingId : {},
       sortCardsBy : 'date',
-      hoveredIndex : null
+      hoveredIndex : null,
     }
   },
   computed: {
@@ -68,6 +68,14 @@ export default {
       } else return '・・・・・'
       }
     },
+    /* テーマのデフォルト読み込み */
+    cssTheme : function() {
+      return function(theme) {
+      if (theme === 'Default'){
+        return this.optionTheme
+      } else return theme
+      }
+    }
   },
   methods: {
     /* カードにCSS（hover）を付与 */
@@ -119,11 +127,6 @@ export default {
   width: 100%;
   height: 100%;
   margin: 1rem auto;
-
-background: #00b09b;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #96c93d, #00b09b);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
   position: relative;
   border-radius: 5px;
   padding-bottom: 1rem;
@@ -160,6 +163,7 @@ background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, F
   display: inline-block;
   font-size: 1.1rem;
   padding: 0.6rem 0;
+  -webkit-text-stroke: 0.5px #fff;
 }
 .cardsDate {
   position: absolute;
