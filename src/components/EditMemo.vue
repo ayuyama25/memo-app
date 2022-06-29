@@ -7,22 +7,14 @@
         <button class="closeButton" @click="closeModal">x</button>
         <form class="row">
           <textarea v-model="editingText.title" placeholder="Title" class="inputText"></textarea>
-
           <div class="flexTextarea">
             <div aria-hidden="true">{{ editingText.description }}</div>
             <textarea v-model="editingText.description" placeholder="Description" class="inputText"></textarea>
           </div>
 
-          <label for="rating">How many stars?</label>
-          <select id="rating" v-model.number="editingText.rating">
-            <option value="5">★★★★★</option>
-            <option value="4">★★★★・</option>
-            <option value="3">★★★・・</option>
-            <option value="2">★★・・・</option>
-            <option value="1">★・・・・</option>
-          </select>
+          <star-memo ref="starEditing" @starCabin="editedStarSet" :havingStar="editingCard.rating"></star-memo>
 
-          <set-theme ref="themeSetting" @cardsTheme="setEditTheme" :defaultTheme="editingCard.themeColor"></set-theme>
+          <set-theme ref="themeEditing" @cardsTheme="setEditTheme" :havingTheme="editingCard.themeColor"></set-theme>
 
           <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">Done !!</button>
           <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
@@ -35,6 +27,7 @@
 
 <script>
 import SetTheme from './SetTheme.vue'
+import StarMemo from './StarMemo.vue'
 export default {
 name: 'EditMemo',
 props: {
@@ -49,7 +42,8 @@ props: {
         timestamp: '',
         themeColor: ''
       },
-      editingTheme: 'Default',
+      editingTheme: '',
+      editStars: '',
       cabinCard: {},
       showContent: false,
       errorMessage: false,
@@ -62,14 +56,15 @@ props: {
         this.cabinCard = {
           title: this.editingText.title,
           description: this.editingText.description,
-          rating: this.editingText.rating,
+          rating: this.editStars,
           timestamp: new Date(),
           id: this.editingCard.id,  //IDは元のまま保持する
           themeColor: this.editingTheme
         }
         this.$emit('editedCabin', this.cabinCard)
         this.cabinCard = null
-        this.$refs.themeSetting.clearTheme()
+        this.$refs.themeEditing.clearTheme()
+        this.$refs.starEditing.clearStars()
         this.clearEditingText()
         this.closeModal()
       } else {
@@ -88,11 +83,16 @@ props: {
       this.editingText.title = this.editingCard.title
       this.editingText.description = this.editingCard.description
       this.editingText.rating = this.editingCard.rating
-      this.$refs.themeSetting.setEditingTheme()
+      this.$refs.themeEditing.setEditingTheme()
+      this.$refs.starEditing.setRateStars()
     },
     /* 編集後テーマを回収してセット */
     setEditTheme(value) {
       this.editingTheme = value
+    },
+    /* レートセット */
+    editedStarSet(value) {
+      this.editStars = value
     },
     /* モーダル開閉 */
     openModal() {
@@ -106,6 +106,7 @@ props: {
   },
   components: {
     SetTheme,
+    StarMemo
   }
 }
 </script>
@@ -173,6 +174,38 @@ label {
 .inputText {
   font-size: 1.1rem;
   font-family: tahoma;
+}
+/* 星の設定 */
+.starRating {
+  display: flex;
+  flex-direction: row-reverse;
+  overflow: hidden;
+  position: relative;
+  width: 80%;
+  font-size: 2.5rem;
+  margin: 0 auto;
+}
+.starRating input {
+  display: none;
+}
+.starRating label {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.starRating input:checked + label, .starRating input:checked + label ~ label{
+  background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
+  background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.starRating label:hover {
+  -webkit-text-stroke: 1px #fff;
+  transform: calc(1.1);
 }
 /* 空白メッセージ */
 .errorMessage {

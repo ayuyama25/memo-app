@@ -163,6 +163,7 @@ export default {
   display: inline-block;
   font-size: 1.1rem;
   padding: 0.6rem 0;
+  -webkit-text-stroke: 0.5px #fff;
 }
 .cardsDate {
   position: absolute;

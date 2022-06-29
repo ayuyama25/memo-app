@@ -195,7 +195,7 @@ h2 {
   background: -webkit-linear-gradient(to left, #BB377D, #FBD3E9);
   background: linear-gradient(to right, #BB377D, #FBD3E9);
 }
-.moon {
+.gentlemoon {
   background: #ddd6f3;
   background: -webkit-linear-gradient(to right, #faaca8, #ddd6f3); 
   background: linear-gradient(to right, #faaca8, #ddd6f3);
