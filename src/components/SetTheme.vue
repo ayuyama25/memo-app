@@ -1,43 +1,48 @@
 <template>
   <section>
-  <div class="chosen-theme">
-    <span>
-      <div class="inputs">
-        <div v-for="(value, index) in this.values" :key="index" @change="choseTheme">
-        <input type="radio" :id="value.index" :value="value" v-model="theme">
-        </div>
-      </div>
-      <div class="labels">
-        <div v-for="(label, index) in this.labels" :key="index">
-        <label :for="label.index">{{ label }}</label>
-        </div>
-      </div>
-    </span>
-    <span class="sample" :class="theme">Theme : {{ theme }}</span>
-  </div>
+    <div class="choice-theme">
+      <span class="sample" :class="newTheme">Set Theme? : {{ newTheme }}</span>
+      <form class="inputs" @change="choseTheme">
+        <label>
+          <input type="radio" name="themes" :id="this.values[0]" :value="this.values[0]" v-model="newTheme">{{ labels[0] }}
+        </label>
+        <label>
+          <input type="radio" name="themes" :id="this.values[1]" :value="this.values[1]" v-model="newTheme">{{ labels[1] }}
+        </label>
+        <label>
+          <input type="radio" name="themes" :id="this.values[2]" :value="this.values[2]" v-model="newTheme">{{ labels[2] }}
+        </label>
+        <label>
+          <input type="radio" name="themes" :id="this.values[3]" :value="this.values[3]" v-model="newTheme">{{ labels[3] }}
+        </label>
+        <label>
+          <input type="radio" name="themes" :id="this.values[4]" :value="this.values[4]" v-model="newTheme">{{ labels[4] }}
+        </label>
+      </form>
+    </div>
   </section>
 </template>
 <script>
 export default {
   name: 'SetTheme',
   props: {
-    defaultTheme: String
+    havingTheme: {}
   },
   data() {
     return {
-      theme: null,
+      newTheme: null,
       values: [
         'happiness',
         'lagoon',
         'blossom',
-        'moon',
+        'gentlemoon',
         'goodday',
       ],
       labels: [
         'Happiness',
         'Lagoon',
         'Blossom',
-        'Moon',
+        'GentleMoon',
         'GoodDay'
       ],
     }
@@ -46,13 +51,13 @@ export default {
     /* propsが最初に持っているテーマのindexを返す */
     defaultCheck: function() {
       for (let i=0; i<this.values.length; i++){
-        if(this.defaultTheme === this.values[i]) {
+        if(this.havingTheme === this.values[i]) {
           return i
         }
       } return 'Default'
     },
-    /* 初期テーマを読む */
-    newTheme: function() {
+    /* 初期テーマを取得 */
+    firstTheme: function() {
       if (this.defaultCheck === 'Default') {
         return this.defaultCheck
       } else return this.values[this.defaultCheck]
@@ -61,50 +66,52 @@ export default {
   methods: {
     /* 編集後テーマをemit */
     choseTheme() {
-      this.$emit('cardsTheme', this.theme)
+      this.$emit('cardsTheme', this.newTheme)
     },
-    /* 既存テーマをセット */
+    /* 編集時、既存テーマをセット */
     setEditingTheme() {
-      return this.theme = this.newTheme
+      this.newTheme = this.firstTheme
+      this.choseTheme()
     },
     /* テーマを初期化 */
     clearTheme() {
-      this.theme = null
+      this.newTheme = null
     }
   }
 }
 </script>
 <style scoped>
 /* テーマ選択欄 */
-.chosen-theme {
+.choice-theme {
   font-size: 0.6rem;
+  line-height: 1.1rem;
   position: relative;
+  box-sizing: border-box;
   display: block;
   text-align: center;
-  margin: 1rem 0 2rem 0;
-}
-.inputs {
-  width: 60%;
-  display: flex;
-  justify-content: space-evenly;
+  margin: 1rem 0;
   overflow: hidden;
 }
-.labels {
+.choice-theme form {
+  display: inline-block;
+  vertical-align: top;
   width: 60%;
-  display: flex;
-  justify-content: space-evenly;
-  padding-right: 0.2rem;
-  overflow: hidden;
+  text-align: left;
+}
+.choice-theme label {
+  white-space: nowrap;
+  padding-right: 0.5rem;
 }
 .sample {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
   width: 30%;
-  display: block;
-  padding: 0.5rem;
+  height: 100%;
+  padding: 3%;
+  margin-right: 3%;
   font-weight: bold;
+  line-height: 1.3rem;
   border: 1px dotted rgb(70, 70, 70);
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 2rem;
 }
 </style>

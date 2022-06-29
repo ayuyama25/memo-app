@@ -137,6 +137,11 @@ h2 {
   border-radius: 5px;
   box-shadow: -2rem 2rem 3rem -6px rgba(0, 0, 0, 0.3);
 }
+.modal-transition-leave-active, .modal-transition-enter-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: 0.3s ease;
+}
 /* 文字グラデーション */
 .gradation {
   display: inline-block;
@@ -195,7 +200,7 @@ h2 {
   background: -webkit-linear-gradient(to left, #BB377D, #FBD3E9);
   background: linear-gradient(to right, #BB377D, #FBD3E9);
 }
-.moon {
+.gentlemoon {
   background: #ddd6f3;
   background: -webkit-linear-gradient(to right, #faaca8, #ddd6f3); 
   background: linear-gradient(to right, #faaca8, #ddd6f3);
