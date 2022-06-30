@@ -81,8 +81,10 @@ export default {
 }
 </script>
 <style scoped>
-/* テーマ選択欄 */
-.choice-theme {
+input:hover, label:hover {
+  cursor: pointer;
+}
+.chosen-theme {
   font-size: 0.6rem;
   line-height: 1.1rem;
   position: relative;

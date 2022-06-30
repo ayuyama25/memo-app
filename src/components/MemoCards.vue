@@ -111,6 +111,9 @@ export default {
   text-align: right;
   padding: 1rem;
 }
+.ordering input:hover {
+  cursor: pointer;
+}
 #byStars::before {
   content: "Sort";
   display: inline-block;
@@ -128,9 +131,9 @@ export default {
   height: 100%;
   margin: 1rem auto;
   position: relative;
-  border-radius: 5px;
+  border-radius: 10px;
   padding-bottom: 1rem;
-  box-shadow: -0.5rem 0.5rem 2rem -2rem rgb(70, 70, 70);
+  box-shadow:  -10px 10px 10px #e4e4e4, 10px -10px 10px #ffffff;
 }
 .cardsTitle {
   display: block;
@@ -177,7 +180,7 @@ export default {
 /* カードへのマウスホバー */
 .hover {
   transition: all 0.3s ease-out;
-  box-shadow: -1rem 1rem 2.5rem -2rem rgb(70, 70, 70);
+  box-shadow:  -15px 15px 25px #bebebe, 15px -15px 25px #ffffff;
 }
 .hoverTitle {
   background-color: rgba(255, 255, 255, 0.35);
