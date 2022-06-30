@@ -21,7 +21,7 @@
 export default {
   name: 'SetTheme',
   props: {
-    defaultTheme: String
+    defaultTheme: String,
   },
   data() {
     return {
@@ -75,7 +75,9 @@ export default {
 }
 </script>
 <style scoped>
-/* テーマ選択欄 */
+input:hover, label:hover {
+  cursor: pointer;
+}
 .chosen-theme {
   font-size: 0.6rem;
   position: relative;
