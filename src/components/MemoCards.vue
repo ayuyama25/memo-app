@@ -68,17 +68,17 @@ export default {
       } else return '・・・・・'
       }
     },
-    /* テーマのデフォルト読み込み */
+    /* デフォルトテーマの読み込み */
     cssTheme : function() {
       return function(theme) {
-      if (theme === 'Default'){
+      if (theme == 'Default'){
         return this.optionTheme
       } else return theme
       }
     }
   },
   methods: {
-    /* カードにCSS（hover）を付与 */
+    /* ホバーされたカードのみにCSSを付与 */
     hovering(value) {
       this.hoveredIndex = value
     },
@@ -128,9 +128,9 @@ export default {
   height: 100%;
   margin: 1rem auto;
   position: relative;
-  border-radius: 5px;
+  border-radius: 10px;
   padding-bottom: 1rem;
-  box-shadow: -0.5rem 0.5rem 2rem -2rem rgb(70, 70, 70);
+  box-shadow:  -10px 10px 10px #e4e4e4, 10px -10px 10px #ffffff;
 }
 .cardsTitle {
   display: block;
@@ -177,7 +177,7 @@ export default {
 /* カードへのマウスホバー */
 .hover {
   transition: all 0.3s ease-out;
-  box-shadow: -1rem 1rem 2.5rem -2rem rgb(70, 70, 70);
+  box-shadow:  -15px 15px 25px #bebebe, 15px -15px 25px #ffffff;
 }
 .hoverTitle {
   background-color: rgba(255, 255, 255, 0.35);
@@ -189,10 +189,6 @@ export default {
   bottom: 2%;
   right: 5%;
   transition: all 0.2s ease-out;
-  opacity: 0.8;
-}
-.editButton:hover {
-  opacity: 1;
 }
 /* 削除ボタンの位置、イベント */
 .deleteButton {
@@ -200,9 +196,5 @@ export default {
   top: 2rem;
   right: 1rem;
   transition: all 0.1s ease-out;
-  opacity: 0.8;
-}
-.deleteButton:hover {
-  opacity: 1;
 }
 </style>

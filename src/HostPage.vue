@@ -3,17 +3,26 @@
   <div class="row">
     <img alt="logo" src="./assets/logo-note.png">
     <div class="new-memo-div">
-      <new-memo @memoCabin="getMemo" :cards="notes"></new-memo>
+      <new-memo @memoCabin="getMemo" :cards="notes" @goHome="tabChangeHome"></new-memo>
     </div>
     <h1>{{ info.name }}</h1>
     <div>{{ info.message }}</div>
-    <nav>ホーム/設定
-      <!-- TODO: naviエリア追加 -->
-    </nav>
   </div>
-  <div class="row">
+  
+  <nav>
+    <li @click="tabChangeHome" :class="{'pushed': homeTab}">Home</li>
+    <li @click="tabChangeSetup" :class="{'pushed': !homeTab}">Setup</li>
+  </nav>
+  <span class="stepLine"></span>
+  <div class="row" v-show="homeTab">
     <div class="memo-cards-div">
       <memo-cards :cards="notes" :optionTheme="defaultColor" @editedCard="editingCard" @deletedId="getDeleted"></memo-cards>
+    </div>
+  </div>
+
+  <div class="row" v-show="!homeTab">
+    <div class="setup-page-div">
+      <setup-page ref="configPage" @setupColor="getDefaultColor" @backHome="tabChangeHome" :defaultSettings="defaultColor"></setup-page>
     </div>
   </div>
 </section>
@@ -21,6 +30,7 @@
 <script>
 import MemoCards from './components/MemoCards.vue'
 import NewMemo from './components/NewMemo.vue'
+import SetupPage from './components/SetupPage.vue'
 export default {
   name: 'HostPage',
   data() {
@@ -39,6 +49,7 @@ export default {
         themeColor: 'Default',
         },
       ],
+      homeTab: true,
       defaultColor: 'happiness',
       newNotes: {},
       changeCard: {},
@@ -73,11 +84,24 @@ export default {
       this.targetIndex = null
       this.changeCard = null
       return this.notes
-    }
+    },
+    /* 子からデフォルトテーマを取得 */
+    getDefaultColor(value) {
+      this.defaultColor = value
+    },
+    /* ナビゲーションタブ切り替え */
+    tabChangeHome() {
+      this.homeTab = true
+    },
+    tabChangeSetup() {
+      this.$refs.configPage.openConfig()
+      this.homeTab = false
+    },
   },
   components: {
     MemoCards,
     NewMemo,
+    SetupPage,
   }
 }
 </script>
@@ -91,16 +115,23 @@ body {
 }
 button {
   border: none;
+  padding: 1rem 1.5rem;
   font-weight: bold;
-  color: rgb(70, 70, 70);
+  color: rgb(100, 100, 100);
+  background-color: #EFEFEF;
   border-radius: 5px;
-  opacity: 0.9;
   transition: all 0.2s ease-out;
+  background-color: linear-gradient(225deg, #dddddd, #ffffff);
+  box-shadow:  -3px 3px 10px #dfdfdf, 3px -3px 10px #ffffff;
 }
 button:hover {
-  opacity: 1;
-  outline: 1px dotted #fff;
-  outline-offset: -1px;
+  color: rgb(70, 70, 70);
+  cursor: pointer;
+  background-color: linear-gradient(225deg, #dddddd, #ffffff);
+  box-shadow:  -3px 3px 10px #f3f3f3, 3px -3px 10px #f7f7f7;
+}
+input:hover, label:hover {
+  cursor: pointer;
 }
 h2 {
   padding-top: 1rem;
@@ -108,13 +139,55 @@ h2 {
 .row {
   display: grid;
   vertical-align: middle;
-  margin: 2em;
+  margin: 1em;
 }
 .new-memo-div {
   padding: 7% 0 0 0;
 }
 .memo-cards-div {
   text-align: start;
+}
+.setup-page-div {
+  text-align: start;
+}
+/* ナビゲーションタブ */
+nav {
+  display: flex;
+  justify-content: start;
+  padding: 0 15%;
+}
+nav li {
+  list-style: none;
+  padding: 1rem;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(225deg, #ffffff, #dddddd);
+  box-shadow:  -10px 10px 20px #d8d8d8, 10px -10px 20px #ffffff;
+  color: rgb(100, 100, 100);
+  -webkit-text-stroke: 0.1px azure;
+}
+nav li:first-child {
+  margin-right: 0.5rem;
+}
+nav li:hover {
+  background: linear-gradient(225deg, #ffffff, #d8e6e6);
+  box-shadow: inset -8px 8px 15px #dae8e8, inset 8px -8px 15px #ffffff;
+  cursor: pointer;
+  color: rgb(70, 70, 70);
+  transition: 0.3s ease-out;
+}
+.pushed {
+  background: linear-gradient(225deg, #dddddd, #ffffff);
+  box-shadow:  -10px 10px 20px #f3f3f3, 10px -10px 20px #f7f7f7;
+  transition: 0.3s ease-out;
+  color: rgb(70, 70, 70);
+}
+.stepLine {
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100vw;
+  border: 5px solid #f5f5f5;
+  box-shadow:  -13px 13px 26px #dfdfdf, 13px -13px 26px #ffffff;
 }
 /* モーダル */
 .overlay {
@@ -139,7 +212,6 @@ h2 {
 }
 .modal-transition-leave-active, .modal-transition-enter-active {
   opacity: 0;
-  transform: scale(0.9);
   transition: 0.3s ease;
 }
 /* 文字グラデーション */
@@ -173,10 +245,11 @@ h2 {
   text-shadow: none;
 }
 .unduration:hover {
-  color: azure;
+  color: #f0ffff;
   border-radius: 60% 150px /100% 85px;
   border-right: 1px solid rgba(255, 255, 255, 0.8);
   text-shadow: 0px 0px 1px #fff;
+  background-color: none;
 }
 .pastel {
   background-color: plum;

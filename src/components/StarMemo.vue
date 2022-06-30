@@ -72,6 +72,9 @@ export default {
 </script>
 
 <style scoped>
+section {
+  padding: 0.5rem 0;
+}
 .starRating {
   display: block;
   flex-direction: row-reverse;
@@ -79,7 +82,7 @@ export default {
   position: relative;
   width: 80%;
   height: 100%;
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   margin: 0 auto;
 }
 .starRating input {
