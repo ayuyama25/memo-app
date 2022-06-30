@@ -2,23 +2,11 @@
   <section>
     <div class="choice-theme">
       <span class="sample" :class="newTheme">Set Theme? : {{ newTheme }}</span>
-      <form class="inputs" @change="choseTheme">
-        <label>
-          <input type="radio" name="themes" :id="this.values[0]" :value="this.values[0]" v-model="newTheme">{{ labels[0] }}
-        </label>
-        <label>
-          <input type="radio" name="themes" :id="this.values[1]" :value="this.values[1]" v-model="newTheme">{{ labels[1] }}
-        </label>
-        <label>
-          <input type="radio" name="themes" :id="this.values[2]" :value="this.values[2]" v-model="newTheme">{{ labels[2] }}
-        </label>
-        <label>
-          <input type="radio" name="themes" :id="this.values[3]" :value="this.values[3]" v-model="newTheme">{{ labels[3] }}
-        </label>
-        <label>
-          <input type="radio" name="themes" :id="this.values[4]" :value="this.values[4]" v-model="newTheme">{{ labels[4] }}
-        </label>
-      </form>
+      <div class="inputs">
+        <li v-for="(item, index) in values" :key="index" @change="choseTheme">
+          <label><input type="radio" name="themes" :value="item.value" v-model="newTheme">{{ item.label }}</label>
+        </li>
+      </div>
     </div>
   </section>
 </template>
@@ -32,18 +20,11 @@ export default {
     return {
       newTheme: null,
       values: [
-        'happiness',
-        'lagoon',
-        'blossom',
-        'gentlemoon',
-        'goodday',
-      ],
-      labels: [
-        'Happiness',
-        'Lagoon',
-        'Blossom',
-        'GentleMoon',
-        'GoodDay'
+        { value: 'happiness', label: 'Happiness' },
+        { value: 'lagoon', label: 'Lagoon' },
+        { value: 'blossom', label: 'Blossom' },
+        { value: 'gentlemoon', label: 'GentleMoon' },
+        { value: 'goodday', label: 'GoodDay' }
       ],
     }
   },
@@ -51,7 +32,7 @@ export default {
     /* propsが最初に持っているテーマのindexを返す */
     defaultCheck: function() {
       for (let i=0; i<this.values.length; i++){
-        if(this.havingTheme === this.values[i]) {
+        if(this.havingTheme === this.values[i].value) {
           return i
         }
       } return 'Default'
@@ -60,7 +41,7 @@ export default {
     firstTheme: function() {
       if (this.defaultCheck === 'Default') {
         return this.defaultCheck
-      } else return this.values[this.defaultCheck]
+      } else return this.values[this.defaultCheck].value
     }
   },
   methods: {
@@ -81,12 +62,12 @@ export default {
 }
 </script>
 <style scoped>
-input:hover, label:hover {
+label:hover {
   cursor: pointer;
 }
-.chosen-theme {
-  font-size: 0.6rem;
-  line-height: 1.1rem;
+.choice-theme {
+  font-size: 0.8rem;
+  line-height: 2rem;
   position: relative;
   box-sizing: border-box;
   display: block;
@@ -94,18 +75,23 @@ input:hover, label:hover {
   margin: 1rem 0;
   overflow: hidden;
 }
-.choice-theme form {
+.inputs {
   display: inline-block;
   vertical-align: top;
   width: 60%;
   text-align: left;
 }
-.choice-theme label {
-  white-space: nowrap;
+.inputs li {
+  list-style: none;
+  display: inline-block;
   padding-right: 0.5rem;
+}
+.inputs label {
+  white-space: nowrap;
 }
 .sample {
   display: inline-block;
+  box-sizing: border-box;
   vertical-align: top;
   position: relative;
   width: 30%;

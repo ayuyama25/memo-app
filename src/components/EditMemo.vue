@@ -1,6 +1,6 @@
 <template>
   <section>
-    <button @click="openModal">Edit</button>
+    <button class="editButton" @click="openModal">Edit</button>
     <transition name="modal-transition">
     <div class="overlay" v-show="showContent">
       <div class="content">
@@ -17,7 +17,7 @@
 
           <set-theme ref="themeEditing" @cardsTheme="setEditTheme" :havingTheme="editingCard.themeColor"></set-theme>
 
-          <button type="submit" @click.prevent="addCard" class="inputButton unduration pastel">Done !!</button>
+          <button type="submit" @click.prevent="addCard" class="doneButton inputButton unduration pastel">Done !!</button>
           <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
         </form>
         <button class="cancelButton" @click="closeModal">cancel</button>
@@ -59,7 +59,7 @@ props: {
           title: this.editingText.title,
           description: this.editingText.description,
           rating: this.editStars,
-          timestamp: new Date(),
+          timestamp: this.editingCard.timestamp,  //Dateは元のまま保持する
           id: this.editingCard.id,  //IDは元のまま保持する
           themeColor: this.editingTheme
         }
@@ -121,22 +121,21 @@ props: {
   width: 15rem;
   margin: 0 auto;
 }
-textarea,button,select {
+textarea, button {
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
   resize: none;
 }
-label {
-  color: rgb(70, 70, 70);
+/* Editボタン */
+  .editButton {
+  box-shadow: none;
 }
 /* モーダルを閉じるボタン配置 */
 .closeButton {
   position: absolute;
   top: 0;
   right: 0;
-  border-radius: 5px;
-  color: rgb(70, 70, 70);
-  text-align: center;
+  box-shadow: none;
 }
 .cancelButton {
   float: left;
@@ -176,38 +175,6 @@ label {
 .inputText {
   font-size: 1.1rem;
   font-family: tahoma;
-}
-/* 星の設定 */
-.starRating {
-  display: flex;
-  flex-direction: row-reverse;
-  overflow: hidden;
-  position: relative;
-  width: 80%;
-  font-size: 2.5rem;
-  margin: 0 auto;
-}
-.starRating input {
-  display: none;
-}
-.starRating label {
-  display: inline-block;
-  width: 20%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
-.starRating input:checked + label, .starRating input:checked + label ~ label{
-  background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.starRating label:hover {
-  -webkit-text-stroke: 1px #fff;
-  transform: calc(1.1);
 }
 /* 空白メッセージ */
 .errorMessage {

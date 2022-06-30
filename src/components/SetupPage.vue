@@ -6,8 +6,8 @@
     </div>
       <div class="outlineGroov">
         <div>Default Background Theme :</div>
-        <set-theme @cardsTheme="getSetupTheme" :derfaultTheme="defaultSetupTheme"></set-theme>
-        <button type="submit" @click.prevent="giveDefaultTheme">OK !!</button>
+        <set-theme ref="defaultColorSetting" @cardsTheme="getSetupTheme" :havingTheme="defaultSettings"></set-theme>
+        <button class="okButton" type="submit" @click.prevent="giveDefaultTheme">OK !!</button>
       </div>
 
   </section>
@@ -17,9 +17,12 @@
 import SetTheme from './SetTheme.vue'
 export default {
   name: 'SetupPage',
+  props: {
+    defaultSettings: String
+  },
   data() {
     return {
-      defaultColorIs: 'happiness'
+      defaultColorIs: null
     }
   },
   methods: {
@@ -32,10 +35,15 @@ export default {
       this.$emit('setupColor', this.defaultColorIs)
       this.finishConfig()
     },
+    /* 初期表示の取得 */
+    openConfig() {
+      this.$nextTick(this.$refs.defaultColorSetting.setEditingTheme())
+    },
+    /* 画面終了しホームタブに戻る */
     finishConfig() {
       this.$emit('backHome')
       this.defaultColorIs = null
-    }
+    },
   },
   components: {
     SetTheme,
@@ -49,9 +57,13 @@ export default {
   text-align: right;
 }
 .outlineGroov {
-  padding: 5%;
+  padding: 8%;
   margin: 5%;
   border-radius: 10px;
   box-shadow:  -8px 8px 10px #e4e4e4, 8px -8px 10px #ffffff;
+}
+.okButton {
+  position: relative;
+  float: right;
 }
 </style>

@@ -3,7 +3,7 @@
   <div class="row">
     <img alt="logo" src="./assets/logo-note.png">
     <div class="new-memo-div">
-      <new-memo @memoCabin="getMemo" :cards="notes"></new-memo>
+      <new-memo @memoCabin="getMemo" :cards="notes" @goHome="tabChangeHome"></new-memo>
     </div>
     <h1>{{ info.name }}</h1>
     <div>{{ info.message }}</div>
@@ -22,7 +22,7 @@
 
   <div class="row" v-show="!homeTab">
     <div class="setup-page-div">
-      <setup-page @setupColor="getDefaultColor" @backHome="tabChangeHome"></setup-page>
+      <setup-page ref="configPage" @setupColor="getDefaultColor" @backHome="tabChangeHome" :defaultSettings="defaultColor"></setup-page>
     </div>
   </div>
 </section>
@@ -94,6 +94,7 @@ export default {
       this.homeTab = true
     },
     tabChangeSetup() {
+      this.$refs.configPage.openConfig()
       this.homeTab = false
     },
   },
@@ -114,17 +115,23 @@ body {
 }
 button {
   border: none;
+  padding: 1rem 1.5rem;
   font-weight: bold;
-  color: rgb(70, 70, 70);
+  color: rgb(100, 100, 100);
+  background-color: #EFEFEF;
   border-radius: 5px;
-  opacity: 0.9;
   transition: all 0.2s ease-out;
-  cursor: pointer;
+  background-color: linear-gradient(225deg, #dddddd, #ffffff);
+  box-shadow:  -3px 3px 10px #dfdfdf, 3px -3px 10px #ffffff;
 }
 button:hover {
-  opacity: 1;
-  outline: 1px solid #fff;
-  outline-offset: -1px;
+  color: rgb(70, 70, 70);
+  cursor: pointer;
+  background-color: linear-gradient(225deg, #dddddd, #ffffff);
+  box-shadow:  -3px 3px 10px #f3f3f3, 3px -3px 10px #f7f7f7;
+}
+input:hover, label:hover {
+  cursor: pointer;
 }
 h2 {
   padding-top: 1rem;
@@ -155,7 +162,7 @@ nav li {
   border-radius: 20px 20px 0 0;
   background: linear-gradient(225deg, #ffffff, #dddddd);
   box-shadow:  -10px 10px 20px #d8d8d8, 10px -10px 20px #ffffff;
-  color: #a0a0a0;
+  color: rgb(100, 100, 100);
   -webkit-text-stroke: 0.1px azure;
 }
 nav li:first-child {
@@ -205,7 +212,6 @@ nav li:hover {
 }
 .modal-transition-leave-active, .modal-transition-enter-active {
   opacity: 0;
-  transform: scale(0.9);
   transition: 0.3s ease;
 }
 /* 文字グラデーション */
@@ -243,6 +249,7 @@ nav li:hover {
   border-radius: 60% 150px /100% 85px;
   border-right: 1px solid rgba(255, 255, 255, 0.8);
   text-shadow: 0px 0px 1px #fff;
+  background-color: none;
 }
 .pastel {
   background-color: plum;

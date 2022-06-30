@@ -68,17 +68,17 @@ export default {
       } else return '・・・・・'
       }
     },
-    /* テーマのデフォルト読み込み */
+    /* デフォルトテーマの読み込み */
     cssTheme : function() {
       return function(theme) {
-      if (theme === 'Default'){
+      if (theme == 'Default'){
         return this.optionTheme
       } else return theme
       }
     }
   },
   methods: {
-    /* カードにCSS（hover）を付与 */
+    /* ホバーされたカードのみにCSSを付与 */
     hovering(value) {
       this.hoveredIndex = value
     },
@@ -110,9 +110,6 @@ export default {
   position: relative;
   text-align: right;
   padding: 1rem;
-}
-.ordering input:hover {
-  cursor: pointer;
 }
 #byStars::before {
   content: "Sort";
@@ -192,10 +189,6 @@ export default {
   bottom: 2%;
   right: 5%;
   transition: all 0.2s ease-out;
-  opacity: 0.8;
-}
-.editButton:hover {
-  opacity: 1;
 }
 /* 削除ボタンの位置、イベント */
 .deleteButton {
@@ -203,9 +196,5 @@ export default {
   top: 2rem;
   right: 1rem;
   transition: all 0.1s ease-out;
-  opacity: 0.8;
-}
-.deleteButton:hover {
-  opacity: 1;
 }
 </style>

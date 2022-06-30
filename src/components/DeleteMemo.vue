@@ -7,7 +7,7 @@
         <h3 class="gradation">{{ title }}</h3>
         <div>{{ message }}</div>
         <button class="options sayYes" @click="deleting"> YES</button>
-        <button class="options" @click="closeModal">Cancel</button>
+        <button class="options sayCancel" @click="closeModal">Cancel</button>
       </div>
     </div>
     </transition>
@@ -52,21 +52,33 @@ h3 {
   border-radius: 50%;
   color: rgb(70, 70, 70);
   text-align: center;
-  opacity: 0.9;
+  box-shadow: none;
+  padding: 0.2rem 0.5rem;
 }
-/* モーダル内ボタン */
+.deleteButton:hover {
+  box-shadow: none
+}
+/* モーダル内ボタン Yes/No */
 .options {
   margin: 1.25rem;
   padding: 1rem 1.5rem;
   box-sizing: border-box;
+  box-shadow:  -3px 3px 10px #dfdfdf, 3px -3px 10px #ffffff;
 }
-/* .options:hover {
-  transition: all 0.1s ease-out;
-  outline: 2px solid #fff;
-  outline-offset: -1px;
-} */
+.sayCancel {
+  background: linear-gradient(225deg, #dddddd, #ffffff);
+}
+.sayCancel:hover {
+  background: linear-gradient(225deg, #dddddd, #ffffff);
+  box-shadow:  -3px 3px 10px #f3f3f3, 3px -3px 10px #f7f7f7;
+}
 .sayYes {
-  background-color: tomato;
+  color: #fff;
+  background: linear-gradient(225deg, #ff6a4c, #e65940);
+}
+.sayYes:hover {
+  background: linear-gradient(225deg, #e65940, #ff6a4c);
+  box-shadow:  -3px 3px 10px #f3f3f3, 3px -3px 10px #f7f7f7;
   color: #fff;
 }
 </style>

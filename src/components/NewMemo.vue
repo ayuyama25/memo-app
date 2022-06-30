@@ -44,13 +44,13 @@ export default {
         rating: '',
         timestamp: '',
         id: '',
-        themeColor: '',
+        themeColor: 'Default',
       },
       cabinCard: {},
       showContent: false,
       errorMessage: false,
       idSerch: new Map(),
-      themeOfCard: '',
+      themeOfCard: 'Default',
       rateStars: '',
     }
   },
@@ -68,6 +68,7 @@ export default {
         }
         this.$emit('memoCabin', this.cabinCard )
         this.closeModal()
+        this.$emit('goHome')  //GOボタン押下後はHomeタブの投稿後画面に遷移
         this.idSerch = null
         this.cabinCard = null
         this.$refs.themeSetting.clearTheme()
@@ -100,7 +101,7 @@ export default {
       this.textInput.rating = null
       this.textInput.timestamp = null
       this.rateStars = null
-      this.themeOfCard = null
+      this.themeOfCard = 'Default'
       this.$refs.themeSetting.clearTheme()
       this.$refs.starSetting.clearStars()
     },
@@ -141,23 +142,17 @@ export default {
   text-align: center;
   margin: 0 auto;
 }
-textarea,button,select {
+textarea,button {
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
   resize: none;
-}
-label {
-  color: rgb(70, 70, 70);
-  padding-right: 0.5rem;
 }
 /* モーダルを閉じるボタン */
 .closeButton {
   position: absolute;
   top: 0;
   right: 0;
-  border-radius: 5px;
-  color: rgb(70, 70, 70);
-  text-align: center;
+  box-shadow: none;
 }
 /* キャンセルボタン */
 .cancelButton {
@@ -199,42 +194,9 @@ label {
   font-size: 1.1rem;
   font-family: tahoma;
 }
-/* 星の設定 */
-.starRating {
-  display: flex;
-  flex-direction: row-reverse;
-  overflow: hidden;
-  position: relative;
-  width: 80%;
-  font-size: 2.5rem;
-  margin: 0 auto;
-}
-.starRating input {
-  display: none;
-}
-.starRating label {
-  display: inline-block;
-  width: 20%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
-.starRating input:checked + label, .starRating input:checked + label ~ label{
-  background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.starRating label:hover {
-  -webkit-text-stroke: 1px #fff;
-  transform: calc(1.1);
-}
 /* 空白メッセージ */
 .errorMessage {
   font-size: 0.8rem;
   color: tomato;
-  text-align: start;
 }
 </style>
