@@ -1,6 +1,7 @@
 <template>
   <section>
     <button class="deleteButton" @click="openModal">x</button>
+    <transition name="modal-transition">
     <div class="overlay" v-show="showContent" @click.self="closeModal">
       <div class="content">
         <h3 class="gradation">{{ title }}</h3>
@@ -9,6 +10,7 @@
         <button class="options" @click="closeModal">Cancel</button>
       </div>
     </div>
+    </transition>
   </section>
 </template>
 
