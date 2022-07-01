@@ -48,6 +48,7 @@ export default {
         b.rating - a.rating )
       }
     },
+    /* 投稿日時の表示 */
     setYear: () => (timedata) => timedata.getFullYear(),
     setMonth: () => (timedata) => timedata.getMonth()+1,
     setDay: () => (timedata) => timedata.getDate(),
@@ -68,16 +69,14 @@ export default {
       } else return '・・・・・'
       }
     },
-    /* デフォルトテーマの読み込み */
-    cssTheme : function() {
-      return function(theme) {
-      if (theme == 'Default'){
-        return this.optionTheme
-      } else return theme
-      }
-    }
   },
   methods: {
+    /* デフォルトテーマの読み込み */
+    cssTheme(value) {
+      if (value === 'Default'){
+        return this.optionTheme
+      } else return value
+      },
     /* ホバーされたカードのみにCSSを付与 */
     hovering(value) {
       this.hoveredIndex = value
