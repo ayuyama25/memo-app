@@ -61,9 +61,14 @@ export default {
   margin: 5%;
   border-radius: 10px;
   box-shadow:  -8px 8px 10px #e4e4e4, 8px -8px 10px #ffffff;
+  overflow: hidden;
 }
 .okButton {
   position: relative;
   float: right;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 }
 </style>
