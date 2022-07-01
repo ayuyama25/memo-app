@@ -47,11 +47,12 @@ export default {
 h3 {
   padding: 1rem 0;
 }
+div {
+  text-align: center;
+}
 /* 削除ボタン本体 */
 .deleteButton {
   border-radius: 50%;
-  color: rgb(70, 70, 70);
-  text-align: center;
   box-shadow: none;
   padding: 0.2rem 0.5rem;
 }
@@ -63,13 +64,13 @@ h3 {
   margin: 1.25rem;
   padding: 1rem 1.5rem;
   box-sizing: border-box;
-  box-shadow:  -3px 3px 10px #dfdfdf, 3px -3px 10px #ffffff;
+  box-shadow:  -3px 3px 10px #dfdfdf, 3px -3px 10px #fff;
 }
 .sayCancel {
-  background: linear-gradient(225deg, #dddddd, #ffffff);
+  background: linear-gradient(225deg, #ddd, #fff);
 }
 .sayCancel:hover {
-  background: linear-gradient(225deg, #dddddd, #ffffff);
+  background: linear-gradient(225deg, #ddd, #fff);
   box-shadow:  -3px 3px 10px #f3f3f3, 3px -3px 10px #f7f7f7;
 }
 .sayYes {

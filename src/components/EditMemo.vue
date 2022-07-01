@@ -14,11 +14,10 @@
           </div>
 
           <star-memo ref="starEditing" @starCabin="editedStarSet" :havingStar="editingCard.rating"></star-memo>
-
           <set-theme ref="themeEditing" @cardsTheme="setEditTheme" :havingTheme="editingCard.themeColor"></set-theme>
 
-          <button type="submit" @click.prevent="addCard" class="doneButton inputButton unduration pastel">Done !!</button>
           <div v-show="errorMessage" class="errorMessage">ノートが空白です</div>
+          <button type="submit" @click.prevent="addCard" class="doneButton inputButton unduration pastel">Done !!</button>
         </form>
         <button class="cancelButton" @click="closeModal">cancel</button>
       </div>
@@ -113,21 +112,28 @@ props: {
 }
 </script>
 <style scoped>
-.content {
-  text-align: center;  
+section {
+  text-align: center;
 }
-.content h2 {
+h2 {
   display: block;
   width: 15rem;
   margin: 0 auto;
 }
-textarea, button {
+button {
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
   resize: none;
 }
+textarea {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  resize: none;
+  border: solid 1px #464646;
+  border-radius: 5px;
+}
 /* Editボタン */
-  .editButton {
+.editButton {
   box-shadow: none;
 }
 /* モーダルを閉じるボタン配置 */
@@ -144,7 +150,7 @@ textarea, button {
 .flexTextarea {
   position: relative;
   font-size: 1.1rem;
-  line-height: 1.5;
+  line-height: 1.5rem;
   margin-bottom: 1rem;
   overflow: hidden;
 }
@@ -154,10 +160,9 @@ textarea, button {
   box-sizing: border-box;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  border: solid 1px;
   padding: 0.5rem 1rem;
-  min-height: 10rem;
-  max-height: 18rem;
+  min-height: 8rem;
+  max-height: 15rem;
 }
 .flexTextarea textarea {
   position: absolute;
@@ -167,7 +172,6 @@ textarea, button {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  border: solid 1px;
   font: inherit;
   letter-spacing: inherit;
 }
@@ -179,7 +183,7 @@ textarea, button {
 /* 空白メッセージ */
 .errorMessage {
   font-size: 0.8rem;
-  color: tomato;
+  color: #ff6347;
   text-align: start;
 }
 </style>
