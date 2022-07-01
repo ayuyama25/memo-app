@@ -20,12 +20,16 @@ export default {
     return {
       newTheme: null,
       values: [
-        { value: 'happiness', label: 'Happiness' },
-        { value: 'lagoon', label: 'Lagoon' },
+        { value: 'cotton', label: 'Cotton'},
         { value: 'blossom', label: 'Blossom' },
-        { value: 'gentlemoon', label: 'GentleMoon' },
-        { value: 'goodday', label: 'GoodDay' }
+        { value: 'lagoon', label: 'Lagoon' },
+        { value: 'goodday', label: 'GoodDay' },
+        { value: 'midnight', label: 'Midnight' },
+        { value: 'happiness', label: 'Happiness' },
+        { value: 'Default', label: 'Default'} //末尾にDefaultを設置
       ],
+      valuesLength: 7, // valuesのオブジェクト数が増減したら書き換える
+      cashDefault: [],
     }
   },
   computed: {
@@ -57,7 +61,23 @@ export default {
     /* テーマを初期化 */
     clearTheme() {
       this.newTheme = null
-    }
+    },
+    /* 'Default'を選択肢から外す、戻す */
+    removeDefault() {
+      if(this.values.length === this.valuesLength-1) {
+        return
+      } else {
+        this.cashDefault = this.values.pop()
+      }
+    },
+    addDefault() {
+      if(this.values.length === this.valuesLength) {
+        return
+      } else {
+        this.values.push(this.cashDefault)
+        this.cashDefault = []
+      }
+    },
   }
 }
 </script>
@@ -100,6 +120,40 @@ label:hover {
   margin-right: 3%;
   font-weight: bold;
   line-height: 1.3rem;
-  border: 1px dotted rgb(70, 70, 70);
+  border: 1px dotted #464646;
+  border-radius: 5px;
+}
+</style>
+<style>
+/* カードの色テーマ（共通） */
+.happiness{
+  background: #f9a239;
+  background: -webkit-linear-gradient(to left, #40E0D0, #f9a239,#f53e9a); 
+  background: linear-gradient(to left, #40E0D0, #f9a239,#f53e9a);
+}
+.lagoon {
+  background: #71b0ef;
+  background: -webkit-linear-gradient(to left, #74eba4, #71b0ef);
+  background: linear-gradient(to left, #74eba4, #71b0ef);
+}
+.midnight {
+  background: #593ae2;
+  background: -webkit-linear-gradient(to left, #a8c0ff, #593ae2);
+  background: linear-gradient(to left, #a8c0ff, #593ae2);
+}
+.blossom {
+  background: #f348a3;
+  background: -webkit-linear-gradient(to right, #f348a3, #FBD3E9);
+  background: linear-gradient(to right, #f348a3, #FBD3E9);
+}
+.goodday {
+  background: #F9D423;
+  background: -webkit-linear-gradient(to left, #F9D423, #FF4E50);
+  background: linear-gradient(to left, #F9D423, #FF4E50);
+}
+.cotton {
+  background: #c7def0;
+  background: -webkit-linear-gradient(to left, #eef2f3, #c7def0);
+  background: linear-gradient(to left, #eef2f3, #c7def0);
 }
 </style>

@@ -6,7 +6,7 @@
     </div>
       <div class="outlineGroov">
         <div>Default Background Theme :</div>
-        <set-theme ref="defaultColorSetting" @cardsTheme="getSetupTheme" :havingTheme="defaultSettings"></set-theme>
+        <set-theme class="set-theme-div" ref="defaultColorSetting" @cardsTheme="getSetupTheme" :havingTheme="defaultSettings"></set-theme>
         <button class="okButton" type="submit" @click.prevent="giveDefaultTheme">OK !!</button>
       </div>
 
@@ -37,13 +37,18 @@ export default {
     },
     /* 初期表示の取得 */
     openConfig() {
+      this.$nextTick(this.$refs.defaultColorSetting.removeDefault())
       this.$nextTick(this.$refs.defaultColorSetting.setEditingTheme())
     },
     /* 画面終了しホームタブに戻る */
     finishConfig() {
       this.$emit('backHome')
+      this.addDefaulChoice()
       this.defaultColorIs = null
     },
+    addDefaulChoice() {
+      this.$nextTick(this.$refs.defaultColorSetting.addDefault())
+    }
   },
   components: {
     SetTheme,
@@ -59,10 +64,12 @@ export default {
 .outlineGroov {
   padding: 8%;
   margin: 5%;
+  text-align: center;
   border-radius: 10px;
-  box-shadow:  -8px 8px 10px #e4e4e4, 8px -8px 10px #ffffff;
-  overflow: hidden;
-  text-align: center;  
+  box-shadow:  -8px 8px 10px #e4e4e4, 8px -8px 10px #fff;
+}
+.set-theme-div {
+  margin: 1.5rem 0;
 }
 .okButton {
   position: relative;

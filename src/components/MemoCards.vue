@@ -129,24 +129,24 @@ export default {
   position: relative;
   border-radius: 10px;
   padding-bottom: 1rem;
-  box-shadow:  -10px 10px 10px #e4e4e4, 10px -10px 10px #ffffff;
+  box-shadow:  -10px 10px 10px #e4e4e4, 10px -10px 10px #fff;
 }
 .cardsTitle {
   display: block;
   position: relative;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10%);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  border-right: 1px solid rgba(255, 255, 255, 0.5);
-  color: azure;
+  border-top: 1px solid rgba(255, 255, 255, 0.502);
+  border-right: 1px solid rgba(255, 255, 255, 0.502);
+  color: #f0ffff;
   text-align: center;
   margin: 0.5rem 0.5rem 0 0.5rem;
   padding: 3rem;
   border-radius: 5px;
   font-size: 1.4rem;
   font-weight: 600;
-  text-shadow: -1px 1px 4px rgba(0, 0, 0, 0.3);
-  box-shadow: -0.5rem 0.5rem 2rem -2rem rgb(70, 70, 70);
+  text-shadow: -1px 1px 4px rgba(0, 0, 0, 0.302);
+  box-shadow: -0.5rem 0.5rem 2rem -2rem #464646;
 }
 .cardsDescription {
   position: relative;
@@ -169,17 +169,17 @@ export default {
   top: 5%;
   right: 5%;
   display: inline-block;
-  color: azure;
+  color: #f0ffff;
   font-size: 0.8rem; 
-  text-shadow: -1px 1px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: -1px 1px 4px rgba(0, 0, 0, 0.302);
 }
 /* カードへのマウスホバー */
 .hover {
   transition: all 0.3s ease-out;
-  box-shadow:  -15px 15px 25px #bebebe, 15px -15px 25px #ffffff;
+  box-shadow:  -15px 15px 25px #bebebe, 15px -15px 25px #fff;
 }
 .hoverTitle {
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.349);
   transition: all 0.3s ease-out;
 }
 /* 編集ボタンの位置、イベント */

@@ -5,6 +5,7 @@
       <span v-for="(item, index) in starList" :key="index" @change="changingRate(item.value)">
         <label :class="item.color"><input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★</label>
       </span>
+      <button class="clear-star-button" @click.prevent="clearStars">erase</button>
     </div>
   </section>
 </template>
@@ -41,7 +42,7 @@ export default {
       this.colorStars(value)
       this.giveStars()
     },
-    /* 初期レートをセットして表示 */
+    /* 初期レートを表示 */
     setRateStars() {
       this.starsOfRate = this.firstStar
       this.colorStars(this.starsOfRate)
@@ -56,9 +57,10 @@ export default {
         this.starList[i].color = 'coloring-star'
       } return
     },
-    /* レートの初期化 */
+    /* レートと表示の初期化 */
     clearStars() {
       this.starsOfRate = null
+      this.giveStars()
       for (let i=0; i<this.starList.length; i++) {
         this.starList[i].color = ''
       } return
@@ -92,14 +94,20 @@ section {
   display: inline-block;
   box-sizing: border-box;
   width: 20%;
-  height: 100%;
   position: relative;
 }
 .starRating label:hover {
   -webkit-text-stroke: 1px #fff;
-  transform: calc(1.1);
 }
+/* 選択したスターに付与する */
 .coloring-star{
-  color: yellowgreen
+  color: #c8ed7d;
+}
+/* eraseボタン */
+.clear-star-button {
+  position: relative;
+  margin-top: 0.5rem;
+  padding: 0 0.5rem;
+  float: right;
 }
 </style>

@@ -50,7 +50,7 @@ export default {
         },
       ],
       homeTab: true,
-      defaultColor: 'happiness',
+      defaultColor: 'cotton',
       newNotes: {},
       changeCard: {},
       targetIndex: '',
@@ -92,6 +92,7 @@ export default {
     /* ナビゲーションタブ切り替え */
     tabChangeHome() {
       this.homeTab = true
+      this.$refs.configPage.addDefaulChoice()
     },
     tabChangeSetup() {
       this.$refs.configPage.openConfig()
@@ -107,28 +108,27 @@ export default {
 </script>
 <style>
 body {
-  background-color: WhiteSmoke;
+  background-color: #f5f5f5;
   margin: 0 5%;
   font-family: tahoma;
   text-align: center;
-  color: rgb(70, 70, 70)
+  color: #464646
 }
 button {
   border: none;
   padding: 1rem 1.5rem;
   font-weight: bold;
-  color: rgb(100, 100, 100);
-  background-color: #EFEFEF;
+  color: #787878;
   border-radius: 5px;
   transition: all 0.2s ease-out;
-  background-color: linear-gradient(225deg, #dddddd, #ffffff);
-  box-shadow:  -3px 3px 10px #dfdfdf, 3px -3px 10px #ffffff;
+  background-color: linear-gradient(225deg, #ddd, #fff);
+  box-shadow:  -3px 3px 10px #dfdfdf, 3px -3px 10px #fff;
 }
 button:hover {
-  color: rgb(70, 70, 70);
+  color: #464646;
   cursor: pointer;
-  background-color: linear-gradient(225deg, #dddddd, #ffffff);
-  box-shadow:  -3px 3px 10px #f3f3f3, 3px -3px 10px #f7f7f7;
+  background-color: linear-gradient(225deg, #fff, #ddd);
+  box-shadow: inset -3px 3px 15px #dfdfdf, inset 3px -3px 15px #fff;
 }
 input:hover, label:hover {
   cursor: pointer;
@@ -139,7 +139,7 @@ h2 {
 .row {
   display: grid;
   vertical-align: middle;
-  margin: 1em;
+  margin: 1rem;
 }
 .new-memo-div {
   padding: 7% 0 0 0;
@@ -153,33 +153,34 @@ h2 {
 /* ナビゲーションタブ */
 nav {
   display: flex;
-  justify-content: start;
   padding: 0 15%;
 }
 nav li {
   list-style: none;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
+  width: 50%;
   border-radius: 20px 20px 0 0;
-  background: linear-gradient(225deg, #ffffff, #dddddd);
-  box-shadow:  -10px 10px 20px #d8d8d8, 10px -10px 20px #ffffff;
-  color: rgb(100, 100, 100);
-  -webkit-text-stroke: 0.1px azure;
+  background: linear-gradient(225deg, #fff, #ddd);
+  box-shadow:  -10px 10px 20px #d8d8d8, 10px -10px 20px #fff;
+  color: #787878;
+  -webkit-text-stroke: 0.1px #f0ffff;
 }
 nav li:first-child {
   margin-right: 0.5rem;
 }
 nav li:hover {
-  background: linear-gradient(225deg, #ffffff, #d8e6e6);
-  box-shadow: inset -8px 8px 15px #dae8e8, inset 8px -8px 15px #ffffff;
+  background: linear-gradient(225deg, #fff, #d8e6e6);
+  box-shadow: inset -8px 8px 15px #dae8e8, inset 8px -8px 15px #fff;
   cursor: pointer;
-  color: rgb(70, 70, 70);
+  color: #464646;
   transition: 0.3s ease-out;
 }
 .pushed {
-  background: linear-gradient(225deg, #dddddd, #ffffff);
+  background: linear-gradient(225deg, #ddd, #fff);
   box-shadow:  -10px 10px 20px #f3f3f3, 10px -10px 20px #f7f7f7;
   transition: 0.3s ease-out;
-  color: rgb(70, 70, 70);
+  color: #787878;
+  text-shadow: 0 0 2px #fff, 0 0 0.5rem #f0ffff, 0 0 1.5rem #f0ffff;
 }
 .stepLine {
   margin: 0;
@@ -187,7 +188,7 @@ nav li:hover {
   display: block;
   width: 100vw;
   border: 5px solid #f5f5f5;
-  box-shadow:  -13px 13px 26px #dfdfdf, 13px -13px 26px #ffffff;
+  box-shadow:  -13px 13px 26px #dfdfdf, 13px -13px 26px #fff;
 }
 /* モーダル */
 .overlay {
@@ -217,8 +218,8 @@ nav li:hover {
 /* 文字グラデーション */
 .gradation {
   display: inline-block;
-  background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
+  background: linear-gradient(15deg,#f088f0,#c8ed7d,#81d0ea,#ea8697);
+  background: -webkit-linear-gradient(15deg,#f088f0,#c8ed7d,#81d0ea,#ea8697);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -227,12 +228,12 @@ nav li:hover {
 .inputButton {
   position: relative;
   display: block;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   cursor: pointer;
   text-align: center;
+  text-shadow: 0 0 1px #464646;
   font-weight: 600;
   letter-spacing: 0.1em;
-  line-height: 1.5;
   user-select: none;
   transition: all 0.3s ease-out;
   border: none;
@@ -247,40 +248,17 @@ nav li:hover {
 .unduration:hover {
   color: #f0ffff;
   border-radius: 60% 150px /100% 85px;
-  border-right: 1px solid rgba(255, 255, 255, 0.8);
-  text-shadow: 0px 0px 1px #fff;
-  background-color: none;
+  text-shadow: 0 0 1px #fff;
 }
 .pastel {
-  background-color: plum;
-  background: linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  background: -webkit-linear-gradient(15deg,plum,yellowgreen,lightblue,pink);
-  box-shadow: 1px 3px 18px azure;
+  background-color: #de7dde;
+  background: linear-gradient(15deg,#f088f0,#c8ed7d,#81d0ea,#ea8697);
+  background: -webkit-linear-gradient(15deg,#f088f0,#c8ed7d,#81d0ea,#ea8697);
+  box-shadow: 5px 5px 10px #d8d8d8, -5px -5px 10px #f0ffff;
 }
-/* カードの色テーマ */
-.happiness {
-  background: #00b09b;
-  background: -webkit-linear-gradient(to left, #96c93d, #00b09b);
-  background: linear-gradient(to left, #96c93d, #00b09b);
-}
-.lagoon {
-  background: #74ebd5;
-  background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);
-  background: linear-gradient(to right, #ACB6E5, #74ebd5);
-}
-.blossom {
-  background: #FBD3E9;
-  background: -webkit-linear-gradient(to left, #BB377D, #FBD3E9);
-  background: linear-gradient(to right, #BB377D, #FBD3E9);
-}
-.gentlemoon {
-  background: #ddd6f3;
-  background: -webkit-linear-gradient(to right, #faaca8, #ddd6f3); 
-  background: linear-gradient(to right, #faaca8, #ddd6f3);
-}
-.goodday {
-  background: #FF4E50;
-  background: -webkit-linear-gradient(to left, #F9D423, #FF4E50);
-  background: linear-gradient(to left, #F9D423, #FF4E50);
+.pastel:hover {
+  background: linear-gradient(195deg,#f088f0,#c8ed7d,#81d0ea,#ea8697);
+  background: -webkit-linear-gradient(195deg,#f088f0,#c8ed7d,#81d0ea,#ea8697);
+  box-shadow: 5px 5px 10px #d8d8d8, -5px -5px 10px #f0ffff;  
 }
 </style>
