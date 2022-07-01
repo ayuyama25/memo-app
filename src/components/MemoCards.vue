@@ -71,10 +71,9 @@ export default {
     },
   },
   methods: {
+    /* デフォルトテーマの読み込み */
     cssTheme(value) {
-      console.log(value)
       if (value === 'Default'){
-        console.log('This is'+ value)
         return this.optionTheme
       } else return value
       },
