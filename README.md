@@ -1,4 +1,5 @@
-# memoapp
+![ロゴ](./src/assets/logo-note.png)
+
 
 ## Project setup
 ```
