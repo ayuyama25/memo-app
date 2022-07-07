@@ -7,11 +7,11 @@
         <h2 class="gradation">Create Your Note!</h2>
         <button class="closeButton" @click="closeModal">x</button>
         <form class="row">
-          <textarea v-model="textInput.title" placeholder="Title.." class="inputText"></textarea>
+          <textarea v-model="textInput.title" placeholder="タイトル.." class="inputText"></textarea>
 
           <div class="flexTextarea">
             <div aria-hidden="true">{{ textInput.description }}</div>
-            <textarea v-model="textInput.description" placeholder="Description.." class="inputText"></textarea>
+            <textarea v-model="textInput.description" placeholder="説明.." class="inputText"></textarea>
           </div>
 
           <star-memo ref="starSetting" @starCabin="newStarSet"></star-memo>

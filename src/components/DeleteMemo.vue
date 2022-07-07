@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       title: 'Would you like to delete this card?',
-      message: 'Once the note is deleted, it cannot be restored.',
+      message: '削除後の復元はできません。本当に削除しますか？',
       showContent: false,
     }
   },

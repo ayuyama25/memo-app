@@ -10,8 +10,8 @@
   </div>
   
   <nav>
-    <li @click="tabChangeHome" :class="{'pushed': homeTab}">Home</li>
-    <li @click="tabChangeSetup" :class="{'pushed': !homeTab}">Setup</li>
+    <li @click="tabChangeHome" :class="{'pushed': homeTab}">ホーム</li>
+    <li @click="tabChangeSetup" :class="{'pushed': !homeTab}">設定</li>
   </nav>
   <span class="stepLine"></span>
   <div class="row" v-show="homeTab">
@@ -41,8 +41,8 @@ export default {
       },
       notes: [
         {
-        title: '- Sample : Create your original note! -',
-        description: '-  Press the "Post new memo!" to start -',
+        title: '- Sample : オリジナルのメモを作成しよう！ -',
+        description: '- Sample :「Post new memo!」ボタンを押して新規メモを作成する。 -',
         rating: 0,
         timestamp: new Date(),
         id: '0',
