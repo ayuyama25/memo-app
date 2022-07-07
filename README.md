@@ -3,7 +3,7 @@
 
   Vueでフロントエンドを実装しています。
 
-<div style="text-align: center; padding: 1rem;">
+<div style="text-align: center;">
 
 ![ロゴ：NOTE](./src/assets/logo-note.png)
 
@@ -14,7 +14,7 @@
 ## 🌱 概要
   「NOTE」は、作成したメモに自分の好きなデコレーションを施し投稿できるメモアプリです。
 
-  「好みのデザインにより近いメモを取れる」という個人の趣味嗜好を叶えることで、より楽しく創作的なメモ体験を提供します。
+  「好みのデザインにより近いメモを取れる」という趣味嗜好を叶えることで、より楽しく創作的なメモ体験を提供します。
 
   昔からあるスクラップブックやコラージュノートに着想を得て、好きなものを好きなように書き残せるという価値の再現に努めました。
 
@@ -26,7 +26,7 @@
   * デフォルトのデザインの設定、変更
 
 ## 📗 使い方
-<div style="text-align: center; padding: 1rem;">
+<div style="text-align: center;">
 
 ![デモンストレーション](https://user-images.githubusercontent.com/89821806/177673218-00d4399d-d774-4292-b840-43bffbd39f54.gif)
 </div>
@@ -139,6 +139,7 @@
 
   レートの星付けや背景デザインの選択などでは、動的にCSSを付与できるように設定しています。
   
+  * レートの星付け
   ~~~javascript
   //StarMemo.vue
   //templateタグ内
@@ -170,7 +171,7 @@
       } return
     },
   }
-  // style scapedタグ内
+  // style scapedタグ内（CSS）
   /* 選択したスターに付与する */
   .coloring-star{
     color: #c8ed7d;
