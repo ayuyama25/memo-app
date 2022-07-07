@@ -28,8 +28,6 @@
 ## 📗 使い方
 <div style="text-align: center;">
 
-<img src="https://user-images.githubusercontent.com/89821806/177673218-00d4399d-d774-4292-b840-43bffbd39f54.gif" width="200" alt="デモンストレーション">
-
 ![デモンストレーション](https://user-images.githubusercontent.com/89821806/177673218-00d4399d-d774-4292-b840-43bffbd39f54.gif)
 </div>
 
