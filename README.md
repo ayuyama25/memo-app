@@ -3,7 +3,7 @@
 
   Vueでフロントエンドを実装しています。
 
-<div style="text-align: center;">
+<div style="align: center;">
 
 ![ロゴ：NOTE](./src/assets/logo-note.png)
 
@@ -26,7 +26,7 @@
   * デフォルトのデザインの設定、変更
 
 ## 📗 使い方
-<div style="text-align: center;">
+<div style="align: center;">
 
 ![デモンストレーション](https://user-images.githubusercontent.com/89821806/177673218-00d4399d-d774-4292-b840-43bffbd39f54.gif)
 </div>
@@ -135,18 +135,17 @@
 
 **[ 非機能 ]**
 
-  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、カラフルな色使いを採用し、ボタン周辺の動きを多く実装しました。
+  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、カラフルな色使いを採用し、トップページの背景にSVGアニメーションを取り入れるなど、動きを多く実装しました。
 
   レートの星付けや背景デザインの選択などでは、動的にCSSを付与できるように設定しています。
   
-  * レートの星付け
+* レートの星付け
   ~~~javascript
   //StarMemo.vue
   //templateタグ内
   <span v-for="(item, index) in starList" :key="index" @change="changingRate(item.value)">
     <label :class="item.color"><input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★</label>
   </span>
-
   // scriptタグ内
   data() {
     return {
@@ -193,6 +192,7 @@
   ├──src
   │   ├assets       // ←ロゴ画像を格納
   │   └components
+  │     ├BackGroundString.vue  // ←SVGアニメーション
   │     ├DeleteMemo.vue    // ←削除用ポップアップ画面
   │     ├EditMemo.vue      // ←編集画面
   │     ├MemoCards.vue     // ←表示部分(タイムライン)
