@@ -3,7 +3,7 @@
 
   Vueでフロントエンドを実装しています。
 
-<div style="align: center;">
+<div align="center">
 
 ![ロゴ：NOTE](./src/assets/logo-note.png)
 
@@ -26,7 +26,7 @@
   * デフォルトのデザインの設定、変更
 
 ## 📗 使い方
-<div style="align: center;">
+<div align="center">
 
 ![デモンストレーション](https://user-images.githubusercontent.com/89821806/177673218-00d4399d-d774-4292-b840-43bffbd39f54.gif)
 </div>
@@ -74,7 +74,9 @@
   データベースを持たず、メモオブジェクトに固有のidを持たせてnotes配列に格納し、v-forディレクティブで表示させています。
   削除や編集の際も、idを使って対象となるオブジェクトを特定します。
 
-* id付与
+<details>
+<summary>id付与(コード)</summary>
+
   ~~~javascript
   // NewMemo.vue
   /* id付与 */
@@ -97,8 +99,10 @@
     },
   },
   ~~~
+</details>
+<details>
+<summary>削除(コード)</summary>
 
-* 削除
   ~~~javascript
   //HostPage.vue
   //templateタグ内
@@ -132,14 +136,82 @@
     },
   }
   ~~~
+</details>
+<br>
 
 **[ 非機能 ]**
 
-  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、カラフルな色使いを採用し、トップページの背景にSVGアニメーションを取り入れるなど、動きを多く実装しました。
+  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、カラフルな色使いを採用し、ボタン周りを中心に動きを多く実装しました。
 
-  レートの星付けや背景デザインの選択などでは、動的にCSSを付与できるように設定しています。
+  トップページに取り入れたCSVアニメーションは、Javascriptで生成したランダムな変数を使って動かしています。
+
+  レートの星付けや背景デザイン選択の際には、動的にCSSを付与できるように設定しています。
   
-* レートの星付け
+<details>
+<summary>CSVアニメーション(コード)</summary>
+
+  ~~~javascript
+  //BackGroundString.vue
+  //templateタグ内
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="20rem" viewBox="0, 0, 100, 100" preserveAspectRatio="none">
+      <path :d="pathStr" stroke="#fff" stroke-width="0.5" fill="none"></path>
+    </svg>
+  //scriptタグ内
+  data() {
+    return {
+      yValues: [],   // Y座標の配列
+      pointsCount : 30,   //座標点の数
+      maxY : 21,   //山の最大値
+      widthSVG: 100,   //全体の幅
+      heightSVG: 100,  //全体の高さ
+      ease: 1.4,  //曲がり具合
+    },
+  },
+  computed: {
+    /* pathの中身（d属性）を返す */
+    pathStr() {
+      return this.valuesToPathStr(this.yValues)
+    },
+    /* ランダムなxy座標の生成 */
+    points() {
+      return this.yValues.map((y, x) => ({
+        x: x / (this.pointsCount -1) * this.widthSVG,
+        y: y * this.maxY + this.heightSVG / 2
+      }))
+    },
+    /* 制御点の算出 */
+    controlX() {
+      return this.widthSVG / (this.pointsCount - 1) * this.ease
+    }
+  },
+  methods: {
+    nextY() {
+      this.yValues = this.generateValues()
+    },
+    /* 0〜1と(-1)〜0の乱数で交互に埋めた値配列を生成 */
+    generateValues() {
+      return new Array(this.pointsCount + 1).fill(0).map((_, index) => Math.random() * ((index % 2) ? 1 : -1 ))
+    },
+    /* パス（ぺジェ曲線）を描画するための文字列を生成 */
+    valuesToPathStr() {
+      if (this.yValues.length < 2) {
+        return 'M0,0'
+      }
+        return `M${this.points.shift().x},${this.points.shift().y} S` + this.points.map(p => `${p.x - this.controlX},${p.y} ${p.x},${p.y}`).join(' ')
+    }
+  },
+  mounted() {
+      this.nextY()
+      window.setInterval(this.nextY, 1000)    
+  }
+  ~~~
+  参考👩‍💻: ics.media（https://ics.media/entry/200225/ )
+  <br>
+</details>
+
+<details>
+<summary>レートの星付け(コード)</summary>
+
   ~~~javascript
   //StarMemo.vue
   //templateタグ内
@@ -176,14 +248,16 @@
     color: #c8ed7d;
   }
   ~~~
+</details>
+<br>
 
 ## 🌵 構成
 
 <!-- 
-### ▶︎ システム構成
+### システム構成
  -->
 
-### ▶︎ ディレクトリ構成
+### ディレクトリ構成
 
 ~~~javascript
   ├──node_modules
@@ -206,7 +280,7 @@
   ├──README.md
 ~~~
 
-### ▶︎ データベース（テーブル）
+### データベース（テーブル）
   HostPage.vueのdata内にあるnotesオブジェクトが作成後のメモデータを保持しています。
 
 ~~~javascript

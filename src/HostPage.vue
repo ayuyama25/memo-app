@@ -1,7 +1,7 @@
 <template>
-<section @click="refsMoveTo">
+<section>
   <div class="back-ground-string-div">
-      <back-ground-string ref="movingStr"></back-ground-string>
+      <back-ground-string></back-ground-string>
   </div>
 
   <div class="row">
