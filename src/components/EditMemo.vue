@@ -7,10 +7,10 @@
         <h2 class="gradation">Edit Your Note!</h2>
         <button class="closeButton" @click="closeModal">x</button>
         <form class="row">
-          <textarea v-model="editingText.title" placeholder="Title" class="inputText"></textarea>
+          <textarea v-model="editingText.title" placeholder="タイトル.." class="inputText"></textarea>
           <div class="flexTextarea">
             <div aria-hidden="true">{{ editingText.description }}</div>
-            <textarea v-model="editingText.description" placeholder="Description" class="inputText"></textarea>
+            <textarea v-model="editingText.description" placeholder="説明.." class="inputText"></textarea>
           </div>
 
           <star-memo ref="starEditing" @starCabin="editedStarSet" :havingStar="editingCard.rating"></star-memo>

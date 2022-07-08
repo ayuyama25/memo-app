@@ -1,7 +1,11 @@
 <template>
-<section>
+<section @click="refsMoveTo">
+  <div class="back-ground-string-div">
+      <back-ground-string ref="movingStr"></back-ground-string>
+  </div>
+
   <div class="row">
-    <img alt="logo" src="./assets/logo-note.png">
+    <img class="logoNOTE" alt="logo" src="./assets/logo-note.png">
     <div class="new-memo-div">
       <new-memo @memoCabin="getMemo" :cards="notes" @goHome="tabChangeHome"></new-memo>
     </div>
@@ -10,8 +14,8 @@
   </div>
   
   <nav>
-    <li @click="tabChangeHome" :class="{'pushed': homeTab}">Home</li>
-    <li @click="tabChangeSetup" :class="{'pushed': !homeTab}">Setup</li>
+    <li @click="tabChangeHome" :class="{'pushed': homeTab}">ホーム</li>
+    <li @click="tabChangeSetup" :class="{'pushed': !homeTab}">設定</li>
   </nav>
   <span class="stepLine"></span>
   <div class="row" v-show="homeTab">
@@ -31,6 +35,7 @@
 import MemoCards from './components/MemoCards.vue'
 import NewMemo from './components/NewMemo.vue'
 import SetupPage from './components/SetupPage.vue'
+import BackGroundString from './components/BackGroundString.vue'
 export default {
   name: 'HostPage',
   data() {
@@ -41,8 +46,8 @@ export default {
       },
       notes: [
         {
-        title: '- Sample : Create your original note! -',
-        description: '-  Press the "Post new memo!" to start -',
+        title: '- Sample : オリジナルのメモを作成しよう！ -',
+        description: '- Sample :「Post new memo!」ボタンを押して新規メモを作成する。 -',
         rating: 0,
         timestamp: new Date(),
         id: '0',
@@ -103,6 +108,7 @@ export default {
     MemoCards,
     NewMemo,
     SetupPage,
+    BackGroundString,
   }
 }
 </script>
@@ -141,6 +147,9 @@ h2 {
   vertical-align: middle;
   margin: 1rem;
 }
+.logoNOTE {
+  z-index: 1;
+}
 .new-memo-div {
   padding: 7% 0 0 0;
 }
@@ -149,6 +158,11 @@ h2 {
 }
 .setup-page-div {
   text-align: start;
+}
+.back-ground-string-div {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 /* ナビゲーションタブ */
 nav {
