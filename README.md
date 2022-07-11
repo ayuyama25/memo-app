@@ -125,7 +125,6 @@
         themeColor: 'Default',
         },    // … 投稿された全メモデータを保持
       ],
-      targetIndex: '',
     }
   },
   methods: {
@@ -276,14 +275,16 @@
   ├──src
   │   ├assets       // ←ロゴ画像を格納
   │   └components
-  │     ├BackGroundString.vue  // ←SVGパスアニメーション
-  │     ├DeleteMemo.vue    // ←削除用ポップアップ画面
-  │     ├EditMemo.vue      // ←編集画面
-  │     ├MemoCards.vue     // ←表示部分(タイムライン)
-  │     ├NewMemo.vue       // ←新規作成画面
-  │     ├SetTheme.vue      // ←テーマ選択用の部品
-  │     ├SetupPage.vue     // ←設定画面
-  │     └StarMemo.vue      // ←レート選択用の部品
+  │     ├pages
+  │     │├DeleteMemo.vue    // ←削除用ポップアップ画面
+  │     │├EditMemo.vue      // ←編集画面
+  │     │├MemoCards.vue     // ←表示部分(タイムライン)
+  │     │├NewMemo.vue       // ←新規作成画面
+  │     │└SetupPage.vue     // ←設定画面
+  │     └parts
+  │       ├BackGroundString.vue  // ←SVGパスアニメーション
+  │       ├StarMemo.vue      // ←レート選択用の部品
+  │       └SetTheme.vue      // ←テーマ選択用の部品
   ├──HostPage.vue  // ←ルートコンポーネント
   ├──main.js       // ←メインファイル
   ├──package.json

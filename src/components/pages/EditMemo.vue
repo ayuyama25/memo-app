@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import SetTheme from './SetTheme.vue'
-import StarMemo from './StarMemo.vue'
+import SetTheme from '../parts/SetTheme.vue'
+import StarMemo from '../parts/StarMemo.vue'
 export default {
 name: 'EditMemo',
 props: {

@@ -32,10 +32,10 @@
 </section>
 </template>
 <script>
-import MemoCards from './components/MemoCards.vue'
-import NewMemo from './components/NewMemo.vue'
-import SetupPage from './components/SetupPage.vue'
-import BackGroundString from './components/BackGroundString.vue'
+import MemoCards from './components/pages/MemoCards.vue'
+import NewMemo from './components/pages/NewMemo.vue'
+import SetupPage from './components/pages/SetupPage.vue'
+import BackGroundString from './components/parts/BackGroundString.vue'
 export default {
   name: 'HostPage',
   data() {
@@ -193,7 +193,7 @@ nav li:hover {
   left: 0;
   width: 100vw;
   border: 11px solid #f5f5f5;
-  box-shadow:  0 8px 10px #f5f5f5, 0 -4px 15px #f0ffff;
+  box-shadow:  0 8px 10px #f5f5f5, 0 -5px 15px #f0ffff;
 }
 /* モーダル */
 .overlay {

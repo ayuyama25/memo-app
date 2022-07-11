@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import SetTheme from './SetTheme.vue'
+import SetTheme from '../parts/SetTheme.vue'
 export default {
   name: 'SetupPage',
   props: {
