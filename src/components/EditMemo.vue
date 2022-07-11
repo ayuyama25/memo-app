@@ -39,9 +39,6 @@ props: {
       editingText: {
         title: '',
         description: '',
-        rating: '',
-        timestamp: '',
-        themeColor: ''
       },
       editingTheme: '',
       editStars: '',

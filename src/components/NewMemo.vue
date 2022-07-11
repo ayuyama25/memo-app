@@ -37,24 +37,22 @@ export default {
   },
   data(){
     return {
-      textInput: {
+      textInput: {    //入力テキスト
         title: '',
         description: '',
-        rating: '',
-        timestamp: '',
-        id: '',
-        themeColor: 'Default',
       },
-      cabinCard: {},
-      showContent: false,
-      errorMessage: false,
-      idSerch: new Map(),
-      themeOfCard: 'Default',
-      rateStars: '',
+      rateStars: '',            //レートの受け皿
+      themeOfCard: 'Default',   //テーマの受け皿
+      cabinCard: {},            //emitする新規メモの受け皿
+      showContent: false,       //モーダル開閉
+      errorMessage: false,      //空白の場合のエラー表示
     }
   },
   methods: {
-    /* 入力された新規メモオブジェクトをmemoCabinに乗せてemit */
+    /* 投稿ボタン押下時の操作： 
+      ・入力された新規メモオブジェクトをmemoCabinに乗せてemit
+      ・モーダルを閉じる
+      ・入力情報の初期化 */
     addCard() {
       if (this.textInput.title || this.textInput.description) {
         this.cabinCard = {
@@ -68,12 +66,11 @@ export default {
         this.$emit('memoCabin', this.cabinCard )
         this.closeModal()
         this.$emit('goHome')  //GOボタン押下後はHomeタブの投稿後画面に遷移
-        this.idSerch = null
         this.cabinCard = null
-        this.$refs.themeSetting.clearTheme()
+        this.$refs.themeSetting.clearTheme()  //子コンポーネント初期化
       } else {
-        this.errorMessage = true
-        setTimeout(() => {this.errorMessage = false },500)
+        this.errorMessage = true    //テキストが空白の場合は投稿禁止とする
+        setTimeout(() => {this.errorMessage = false}, 800)
       }
     },
     /* id付与 */
@@ -81,8 +78,8 @@ export default {
       if (this.cards.length == 0 ) {
         return 0
       } else {
-        this.idSerch = cardsData.map((card) => card.id)
-        return Math.max(...this.idSerch) + 1
+        let idSerch = cardsData.map((card) => card.id)
+        return Math.max(...idSerch) + 1
       }
     },
     /* 子からテーマを取得 */
@@ -97,8 +94,6 @@ export default {
     clearTextImput() {
       this.textInput.title = null
       this.textInput.description = null
-      this.textInput.rating = null
-      this.textInput.timestamp = null
       this.rateStars = null
       this.themeOfCard = 'Default'
       this.$refs.themeSetting.clearTheme()

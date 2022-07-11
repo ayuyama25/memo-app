@@ -78,10 +78,10 @@
 <summary>id付与(コード)</summary>
 
   ~~~javascript
-  // NewMemo.vue
+  // (NewMemo.vue)
   /* id付与 */
   props: {
-    cards: Array
+    cards: Array    //親コンポーネントからメモオブジェクト全体の配列を取得
   },
   data(){
     return {
@@ -89,6 +89,10 @@
     }
   },
   methods: {
+    /*  ID付与処理：
+        ・メモが一つもない場合、 id=0を付与
+        ・メモがある場合、 全idから最大値を検索し、+1した値を付与
+      ↓関数の引数としてprops: cardsを渡す */
     getNewId(cardsData) {
       if (this.cards.length == 0 ) {
         return 0
@@ -106,7 +110,8 @@
   ~~~javascript
   //HostPage.vue
   //templateタグ内
-  <memo-cards @deletedId="getDeleted"></memo-cards>
+  <memo-cards @deletedId="getDeleted"></memo-cards> //子コンポーネントから削除ボタンが押されたメモのid情報を取得
+
   //scriptタグ内
   data() {
     return {
@@ -118,20 +123,16 @@
         timestamp: new Date(),
         id: '0',
         themeColor: 'Default',
-        },
+        },    // … 投稿された全メモデータを保持
       ],
-      changeCard: {},
       targetIndex: '',
     }
   },
   methods: {
     /* 削除対象idからnotes配列の[index]を検索して削除実行 */
     getDeleted(value) {
-      this.changeCard = value
-      this.targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === this.changeCard )
-      this.notes.splice([this.targetIndex],1)
-      this.targetIndex = null
-      this.changeCard = null
+      let deleteIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === value )
+      this.notes.splice([deleteIndex],1)
       return this.notes
     },
   }
@@ -141,7 +142,7 @@
 
 **[ 非機能 ]**
 
-  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、カラフルな色使いを採用し、ボタン周りを中心に動きを多く実装しました。
+  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、ボタン周りを中心にカラフルな色使いを採用し、動きを多く実装しました。
 
   トップページに取り入れたCSVアニメーションは、Javascriptで生成したランダムな変数を使って動かしています。
 
@@ -151,17 +152,18 @@
 <summary>CSVアニメーション(コード)</summary>
 
   ~~~javascript
-  //BackGroundString.vue
+  //(BackGroundString.vue)
   //templateタグ内
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="20rem" viewBox="0, 0, 100, 100" preserveAspectRatio="none">
-      <path :d="pathStr" stroke="#fff" stroke-width="0.5" fill="none"></path>
+      <path :d="pathStr" stroke="#fff" stroke-width="0.4" fill="none"></path>
     </svg>
+
   //scriptタグ内
   data() {
     return {
       yValues: [],   // Y座標の配列
       pointsCount : 30,   //座標点の数
-      maxY : 21,   //山の最大値
+      maxY : 18,   //山の最大値
       widthSVG: 100,   //全体の幅
       heightSVG: 100,  //全体の高さ
       ease: 1.4,  //曲がり具合
@@ -205,7 +207,7 @@
       window.setInterval(this.nextY, 1000)    
   }
   ~~~
-  参考👩‍💻: ics.media（https://ics.media/entry/200225/ )
+  アニメーションの学習・参考👩‍💻: ics.media（https://ics.media/entry/200225/ )
   <br>
 </details>
 
@@ -213,25 +215,33 @@
 <summary>レートの星付け(コード)</summary>
 
   ~~~javascript
-  //StarMemo.vue
+  //(StarMemo.vue)
   //templateタグ内
   <span v-for="(item, index) in starList" :key="index" @change="changingRate(item.value)">
-    <label :class="item.color"><input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★</label>
+    <label :class="item.color">
+      <input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★
+    </label>
   </span>
+
   // scriptタグ内
   data() {
     return {
       starsOfRate: null,
       starList: [
-        {value: 1, name: '1star', color: ''},
-        {value: 2, name: '2star', color: ''},
-        {value: 3, name: '3star', color: ''},
-        {value: 4, name: '4star', color: ''},
-        {value: 5, name: '5star', color: ''},
+        {value: 1, color: ''},
+        {value: 2, color: ''},
+        {value: 3, color: ''},
+        {value: 4, color: ''},
+        {value: 5, color: ''},
       ] 
     }
   },
   methods: {
+    /* 選択変更時の動作 */
+    changingRate(value) {
+      this.colorStars(value)
+      this.giveStars()        //省略
+    },
     /* 選択したレートに応じて色をつける */
     colorStars(value) {
       for (let i=0; i<this.starList.length; i++) {
@@ -242,8 +252,8 @@
       } return
     },
   }
+
   // style scapedタグ内（CSS）
-  /* 選択したスターに付与する */
   .coloring-star{
     color: #c8ed7d;
   }
@@ -266,7 +276,7 @@
   ├──src
   │   ├assets       // ←ロゴ画像を格納
   │   └components
-  │     ├BackGroundString.vue  // ←SVGアニメーション
+  │     ├BackGroundString.vue  // ←SVGパスアニメーション
   │     ├DeleteMemo.vue    // ←削除用ポップアップ画面
   │     ├EditMemo.vue      // ←編集画面
   │     ├MemoCards.vue     // ←表示部分(タイムライン)

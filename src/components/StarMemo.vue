@@ -3,7 +3,9 @@
     <div>Set stars?</div>
     <div class="starRating">
       <span v-for="(item, index) in starList" :key="index" @change="changingRate(item.value)">
-        <label :class="item.color"><input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★</label>
+        <label :class="item.color">
+          <input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★
+        </label>
       </span>
       <button class="clear-star-button" @click.prevent="clearStars">erase</button>
     </div>
@@ -20,11 +22,11 @@ export default {
     return {
       starsOfRate: null,
       starList: [
-        {value: 1, name: '1star', color: ''},
-        {value: 2, name: '2star', color: ''},
-        {value: 3, name: '3star', color: ''},
-        {value: 4, name: '4star', color: ''},
-        {value: 5, name: '5star', color: ''},
+        {value: 1, color: ''},
+        {value: 2, color: ''},
+        {value: 3, color: ''},
+        {value: 4, color: ''},
+        {value: 5, color: ''},
       ] 
     }
   },

@@ -30,7 +30,7 @@ export default {
   methods: {
     deleting() {
       this.closeModal()
-      this.$nextTick(this.$emit('deletingCard', this.deletingCardId))
+      this.$emit('deletingCard', this.deletingCardId)
     },
     /* モーダル開閉 */
     openModal() {

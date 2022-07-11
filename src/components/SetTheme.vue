@@ -62,7 +62,7 @@ export default {
     clearTheme() {
       this.newTheme = null
     },
-    /* 'Default'を選択肢から外す、戻す */
+    /* 設定画面用： 'Default'を選択肢から外す、戻す */
     removeDefault() {
       if(this.values.length === this.valuesLength-1) {
         return
