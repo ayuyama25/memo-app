@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import SetTheme from './SetTheme.vue'
+import SetTheme from '../parts/SetTheme.vue'
 export default {
   name: 'SetupPage',
   props: {
@@ -47,7 +47,7 @@ export default {
       this.defaultColorIs = null
     },
     addDefaulChoice() {
-      this.$nextTick(this.$refs.defaultColorSetting.addDefault())
+      this.$refs.defaultColorSetting.addDefault()
     }
   },
   components: {

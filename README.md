@@ -3,7 +3,7 @@
 
   Vueでフロントエンドを実装しています。
 
-<div style="align: center;">
+<div align="center">
 
 ![ロゴ：NOTE](./src/assets/logo-note.png)
 
@@ -26,7 +26,7 @@
   * デフォルトのデザインの設定、変更
 
 ## 📗 使い方
-<div style="align: center;">
+<div align="center">
 
 ![デモンストレーション](https://user-images.githubusercontent.com/89821806/177673218-00d4399d-d774-4292-b840-43bffbd39f54.gif)
 </div>
@@ -74,12 +74,14 @@
   データベースを持たず、メモオブジェクトに固有のidを持たせてnotes配列に格納し、v-forディレクティブで表示させています。
   削除や編集の際も、idを使って対象となるオブジェクトを特定します。
 
-* id付与
+<details>
+<summary>id付与(コード)</summary>
+
   ~~~javascript
-  // NewMemo.vue
+  // (NewMemo.vue)
   /* id付与 */
   props: {
-    cards: Array
+    cards: Array    //親コンポーネントからメモオブジェクト全体の配列を取得
   },
   data(){
     return {
@@ -87,6 +89,10 @@
     }
   },
   methods: {
+    /*  ID付与処理：
+        ・メモが一つもない場合、 id=0を付与
+        ・メモがある場合、 全idから最大値を検索し、+1した値を付与
+      ↓関数の引数としてprops: cardsを渡す */
     getNewId(cardsData) {
       if (this.cards.length == 0 ) {
         return 0
@@ -97,12 +103,15 @@
     },
   },
   ~~~
+</details>
+<details>
+<summary>削除(コード)</summary>
 
-* 削除
   ~~~javascript
   //HostPage.vue
   //templateタグ内
-  <memo-cards @deletedId="getDeleted"></memo-cards>
+  <memo-cards @deletedId="getDeleted"></memo-cards> //子コンポーネントから削除ボタンが押されたメモのid情報を取得
+
   //scriptタグ内
   data() {
     return {
@@ -114,52 +123,124 @@
         timestamp: new Date(),
         id: '0',
         themeColor: 'Default',
-        },
+        },    // … 投稿された全メモデータを保持
       ],
-      changeCard: {},
-      targetIndex: '',
     }
   },
   methods: {
     /* 削除対象idからnotes配列の[index]を検索して削除実行 */
     getDeleted(value) {
-      this.changeCard = value
-      this.targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === this.changeCard )
-      this.notes.splice([this.targetIndex],1)
-      this.targetIndex = null
-      this.changeCard = null
+      let deleteIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === value )
+      this.notes.splice([deleteIndex],1)
       return this.notes
     },
   }
   ~~~
+</details>
+<br>
 
 **[ 非機能 ]**
 
-  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、カラフルな色使いを採用し、トップページの背景にSVGアニメーションを取り入れるなど、動きを多く実装しました。
+  「楽しく創作的なメモ体験」というコンセプトを反映しつつ操作性を高めるために、ボタン周りを中心にカラフルな色使いを採用し、動きを多く実装しました。
 
-  レートの星付けや背景デザインの選択などでは、動的にCSSを付与できるように設定しています。
+  トップページに取り入れたCSVアニメーションは、Javascriptで生成したランダムな変数を使って動かしています。
+
+  レートの星付けや背景デザイン選択の際には、動的にCSSを付与できるように設定しています。
   
-* レートの星付け
+<details>
+<summary>CSVアニメーション(コード)</summary>
+
   ~~~javascript
-  //StarMemo.vue
+  //(BackGroundString.vue)
+  //templateタグ内
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="20rem" viewBox="0, 0, 100, 100" preserveAspectRatio="none">
+      <path :d="pathStr" stroke="#fff" stroke-width="0.4" fill="none"></path>
+    </svg>
+
+  //scriptタグ内
+  data() {
+    return {
+      yValues: [],   // Y座標の配列
+      pointsCount : 30,   //座標点の数
+      maxY : 18,   //山の最大値
+      widthSVG: 100,   //全体の幅
+      heightSVG: 100,  //全体の高さ
+      ease: 1.4,  //曲がり具合
+    },
+  },
+  computed: {
+    /* pathの中身（d属性）を返す */
+    pathStr() {
+      return this.valuesToPathStr(this.yValues)
+    },
+    /* ランダムなxy座標の生成 */
+    points() {
+      return this.yValues.map((y, x) => ({
+        x: x / (this.pointsCount -1) * this.widthSVG,
+        y: y * this.maxY + this.heightSVG / 2
+      }))
+    },
+    /* 制御点の算出 */
+    controlX() {
+      return this.widthSVG / (this.pointsCount - 1) * this.ease
+    }
+  },
+  methods: {
+    nextY() {
+      this.yValues = this.generateValues()
+    },
+    /* 0〜1と(-1)〜0の乱数で交互に埋めた値配列を生成 */
+    generateValues() {
+      return new Array(this.pointsCount + 1).fill(0).map((_, index) => Math.random() * ((index % 2) ? 1 : -1 ))
+    },
+    /* パス（ぺジェ曲線）を描画するための文字列を生成 */
+    valuesToPathStr() {
+      if (this.yValues.length < 2) {
+        return 'M0,0'
+      }
+        return `M${this.points.shift().x},${this.points.shift().y} S` + this.points.map(p => `${p.x - this.controlX},${p.y} ${p.x},${p.y}`).join(' ')
+    }
+  },
+  mounted() {
+      this.nextY()
+      window.setInterval(this.nextY, 1000)    
+  }
+  ~~~
+  アニメーションの学習・参考👩‍💻: ics.media（https://ics.media/entry/200225/ )
+  <br>
+</details>
+
+<details>
+<summary>レートの星付け(コード)</summary>
+
+  ~~~javascript
+  //(StarMemo.vue)
   //templateタグ内
   <span v-for="(item, index) in starList" :key="index" @change="changingRate(item.value)">
-    <label :class="item.color"><input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★</label>
+    <label :class="item.color">
+      <input type="radio" name="stars" v-model="starsOfRate" :value="item.value">★
+    </label>
   </span>
+
   // scriptタグ内
   data() {
     return {
       starsOfRate: null,
       starList: [
-        {value: 1, name: '1star', color: ''},
-        {value: 2, name: '2star', color: ''},
-        {value: 3, name: '3star', color: ''},
-        {value: 4, name: '4star', color: ''},
-        {value: 5, name: '5star', color: ''},
+        {value: 1, color: ''},
+        {value: 2, color: ''},
+        {value: 3, color: ''},
+        {value: 4, color: ''},
+        {value: 5, color: ''},
       ] 
     }
   },
   methods: {
+    /* 選択変更時の動作 */
+    changingRate(value) {
+      this.colorStars(value)
+      this.giveStars()        //省略
+    },
     /* 選択したレートに応じて色をつける */
     colorStars(value) {
       for (let i=0; i<this.starList.length; i++) {
@@ -170,20 +251,22 @@
       } return
     },
   }
+
   // style scapedタグ内（CSS）
-  /* 選択したスターに付与する */
   .coloring-star{
     color: #c8ed7d;
   }
   ~~~
+</details>
+<br>
 
 ## 🌵 構成
 
 <!-- 
-### ▶︎ システム構成
+### システム構成
  -->
 
-### ▶︎ ディレクトリ構成
+### ディレクトリ構成
 
 ~~~javascript
   ├──node_modules
@@ -192,21 +275,23 @@
   ├──src
   │   ├assets       // ←ロゴ画像を格納
   │   └components
-  │     ├BackGroundString.vue  // ←SVGアニメーション
-  │     ├DeleteMemo.vue    // ←削除用ポップアップ画面
-  │     ├EditMemo.vue      // ←編集画面
-  │     ├MemoCards.vue     // ←表示部分(タイムライン)
-  │     ├NewMemo.vue       // ←新規作成画面
-  │     ├SetTheme.vue      // ←テーマ選択用の部品
-  │     ├SetupPage.vue     // ←設定画面
-  │     └StarMemo.vue      // ←レート選択用の部品
+  │     ├pages
+  │     │├DeleteMemo.vue    // ←削除用ポップアップ画面
+  │     │├EditMemo.vue      // ←編集画面
+  │     │├MemoCards.vue     // ←表示部分(タイムライン)
+  │     │├NewMemo.vue       // ←新規作成画面
+  │     │└SetupPage.vue     // ←設定画面
+  │     └parts
+  │       ├BackGroundString.vue  // ←SVGパスアニメーション
+  │       ├StarMemo.vue      // ←レート選択用の部品
+  │       └SetTheme.vue      // ←テーマ選択用の部品
   ├──HostPage.vue  // ←ルートコンポーネント
   ├──main.js       // ←メインファイル
   ├──package.json
   ├──README.md
 ~~~
 
-### ▶︎ データベース（テーブル）
+### データベース（テーブル）
   HostPage.vueのdata内にあるnotesオブジェクトが作成後のメモデータを保持しています。
 
 ~~~javascript

@@ -1,7 +1,7 @@
 <template>
   <div class="autoStr">
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="20rem" viewBox="0, 0, 100, 100" preserveAspectRatio="none">
-    <path :d="pathStr" stroke="#fff" stroke-width="0.5" fill="none"></path>
+    <path :d="pathStr" stroke="#fff" stroke-width="0.4" fill="none"></path>
     </svg>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
     return {
       yValues: [],   // Y座標の配列
       pointsCount : 30,   //座標点の数
-      maxY : 21,   //山の最大値
+      maxY : 18,   //山の最大値
       widthSVG: 100,   //全体の幅
       heightSVG: 100,  //全体の高さ
       ease: 1.4,  //曲がり具合
