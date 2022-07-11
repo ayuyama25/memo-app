@@ -1,6 +1,8 @@
 <template>
   <section>
     <h2 class="gradation">Here's your notes:</h2>
+
+    <!-- ソート基準選択 -->
     <form class="ordering">
       <input type="radio" id="byStars" value="stars" v-model="sortCardsBy">
       <label for="byStars">Rating</label>
@@ -8,16 +10,26 @@
       <label for="byDate">Date</label>
     </form>
 
-    <div class="row cards" :class="[cssTheme(card.themeColor), index === hoveredIndex ? 'hover' : '']" v-for="(card, index) in cardsArray" :key ="index" @mouseover="hovering(index)" @mouseleave="mouseOff">
-      <li class="cardsTitle" :class="[index === hoveredIndex ? 'hoverTitle' : '']">{{ card.title }}</li>
-      <li class="cardsDescription">{{ card.description }}</li>
-      <li class="cardsRating gradation">{{ ratingData(card.rating) }}</li>
-      <li class="cardsDate">{{ setYear(card.timestamp) }}/{{ setMonth(card.timestamp) }}/{{ setDay(card.timestamp) }} {{ setHour(card.timestamp) }}:{{ setMinute(card.timestamp) }}</li>
-
+    <!-- カードの表示 -->
+    <div class="row cards" :class="[cssTheme(card.themeColor), index === hoveredIndex ? 'hover' : '']" 
+      v-for="(card, index) in cardsArray" :key ="index" 
+      @mouseover="hovering(index)" @mouseleave="mouseOff">
+        <li class="cardsTitle" :class="[index === hoveredIndex ? 'hoverTitle' : '']">
+          {{ card.title }}</li>
+        <li class="cardsDescription">
+          {{ card.description }}</li>
+        <li class="cardsRating gradation">
+          {{ ratingData(card.rating) }}</li>
+        <li class="cardsDate">
+          {{ setYear(card.timestamp) }}/
+          {{ setMonth(card.timestamp) }}/
+          {{ setDay(card.timestamp) }} 
+          {{ setHour(card.timestamp) }}:
+          {{ setMinute(card.timestamp) }}</li>
       <edit-memo :editingCard="cardsArray[index]" @editedCabin="getEditedMemo" class="editButton"></edit-memo>  
       <delete-memo :deletingCardId="cardsArray[index].id" @deletingCard="getDeletedId" class="deleteButton"></delete-memo>
-
     </div>
+
   </section>
 </template>
 <script>
@@ -31,8 +43,6 @@ export default {
   },
   data() {
     return {
-      editedMemo : {},
-      deletingId : {},
       sortCardsBy : 'date',
       hoveredIndex : null,
     }
@@ -85,15 +95,11 @@ export default {
       this.hoveredIndex = null
     },
     /* 孫から編集,削除オブジェクトを受け取り、親にemit */
-    getEditedMemo(value) {
-      this.editedMemo = value
-      this.$emit('editedCard', this.editedMemo)
-      this.editedMemo = null
+    getEditedMemo(editedMemo) {
+      this.$emit('editedCard', editedMemo)
     },
-    getDeletedId(value) {
-      this.deletingId = value
-      this.$emit('deletedId', this.deletingId)
-      this.deletingId = null
+    getDeletedId(deletingId) {
+      this.$emit('deletedId', deletingId)
     },
   },
   components: {

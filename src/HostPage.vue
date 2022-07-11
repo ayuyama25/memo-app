@@ -1,7 +1,11 @@
 <template>
 <section>
+  <div class="back-ground-string-div">
+      <back-ground-string></back-ground-string>
+  </div>
+
   <div class="row">
-    <img alt="logo" src="./assets/logo-note.png">
+    <img class="logoNOTE" alt="logo" src="./assets/logo-note.png">
     <div class="new-memo-div">
       <new-memo @memoCabin="getMemo" :cards="notes" @goHome="tabChangeHome"></new-memo>
     </div>
@@ -10,8 +14,8 @@
   </div>
   
   <nav>
-    <li @click="tabChangeHome" :class="{'pushed': homeTab}">Home</li>
-    <li @click="tabChangeSetup" :class="{'pushed': !homeTab}">Setup</li>
+    <li @click="tabChangeHome" :class="{'pushed': homeTab}">ホーム</li>
+    <li @click="tabChangeSetup" :class="{'pushed': !homeTab}">設定</li>
   </nav>
   <span class="stepLine"></span>
   <div class="row" v-show="homeTab">
@@ -28,9 +32,10 @@
 </section>
 </template>
 <script>
-import MemoCards from './components/MemoCards.vue'
-import NewMemo from './components/NewMemo.vue'
-import SetupPage from './components/SetupPage.vue'
+import MemoCards from './components/pages/MemoCards.vue'
+import NewMemo from './components/pages/NewMemo.vue'
+import SetupPage from './components/pages/SetupPage.vue'
+import BackGroundString from './components/parts/BackGroundString.vue'
 export default {
   name: 'HostPage',
   data() {
@@ -41,8 +46,8 @@ export default {
       },
       notes: [
         {
-        title: '- Sample : Create your original note! -',
-        description: '-  Press the "Post new memo!" to start -',
+        title: '- Sample : オリジナルのメモを作成しよう！ -',
+        description: '- 「Post new memo!」ボタンを押して新規メモを作成する。 -',
         rating: 0,
         timestamp: new Date(),
         id: '0',
@@ -51,38 +56,27 @@ export default {
       ],
       homeTab: true,
       defaultColor: 'cotton',
-      newNotes: {},
-      changeCard: {},
-      targetIndex: '',
     }
   },
   methods: {
     /* 新規メモデータをnotes配列に格納 */
     getMemo(value) {
-      this.newNotes = value
-      this.notes.push(this.newNotes)
-      return this.newNotes = null
+      this.notes.push(value)
     },
     /* 編集後メモオブジェクトidから対象の[index]を検索しnotesを上書き */
     editingCard(value) {
-      this.changeCard = value
-      this.targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === this.changeCard.id )
-      this.notes[this.targetIndex].title = this.changeCard.title
-      this.notes[this.targetIndex].description = this.changeCard.description
-      this.notes[this.targetIndex].rating = this.changeCard.rating
-      this.notes[this.targetIndex].timestamp = this.changeCard.timestamp
-      this.notes[this.targetIndex].themeColor = this.changeCard.themeColor
-      this.targetIndex = null
-      this.changeCard = null
+      let targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === value.id )
+      this.notes[targetIndex].title = value.title
+      this.notes[targetIndex].description = value.description
+      this.notes[targetIndex].rating = value.rating
+      this.notes[targetIndex].timestamp = value.timestamp
+      this.notes[targetIndex].themeColor = value.themeColor
       return this.notes
     },
     /* 削除対象idからnotesの[index]を検索して削除実行 */
     getDeleted(value) {
-      this.changeCard = value
-      this.targetIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === this.changeCard )
-      this.notes.splice([this.targetIndex],1)
-      this.targetIndex = null
-      this.changeCard = null
+      let deleteIndex = this.notes.map((card) => (card)).findIndex((card) => card.id === value )
+      this.notes.splice([deleteIndex],1)
       return this.notes
     },
     /* 子からデフォルトテーマを取得 */
@@ -103,6 +97,7 @@ export default {
     MemoCards,
     NewMemo,
     SetupPage,
+    BackGroundString,
   }
 }
 </script>
@@ -141,6 +136,9 @@ h2 {
   vertical-align: middle;
   margin: 1rem;
 }
+.logoNOTE {
+  z-index: 1;
+}
 .new-memo-div {
   padding: 7% 0 0 0;
 }
@@ -149,6 +147,11 @@ h2 {
 }
 .setup-page-div {
   text-align: start;
+}
+.back-ground-string-div {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 /* ナビゲーションタブ */
 nav {
@@ -160,7 +163,7 @@ nav li {
   padding: 0.5rem 1rem;
   width: 50%;
   border-radius: 20px 20px 0 0;
-  background: linear-gradient(225deg, #fff, #ddd);
+  background: linear-gradient(225deg, #ddd, #fff);
   box-shadow:  -10px 10px 20px #d8d8d8, 10px -10px 20px #fff;
   color: #787878;
   -webkit-text-stroke: 0.1px #f0ffff;
@@ -176,8 +179,8 @@ nav li:hover {
   transition: 0.3s ease-out;
 }
 .pushed {
-  background: linear-gradient(225deg, #ddd, #fff);
-  box-shadow:  -10px 10px 20px #f3f3f3, 10px -10px 20px #f7f7f7;
+  background: linear-gradient(225deg, #fff, #ddd);
+  box-shadow: inset -8px 8px 15px #dae8e8, inset 8px -8px 15px #fff;
   transition: 0.3s ease-out;
   color: #787878;
   text-shadow: 0 0 2px #fff, 0 0 0.5rem #f0ffff, 0 0 1.5rem #f0ffff;
@@ -186,9 +189,11 @@ nav li:hover {
   margin: 0;
   padding: 0;
   display: block;
+  position: absolute;
+  left: 0;
   width: 100vw;
-  border: 5px solid #f5f5f5;
-  box-shadow:  -13px 13px 26px #dfdfdf, 13px -13px 26px #fff;
+  border: 11px solid #f5f5f5;
+  box-shadow:  0 8px 10px #f5f5f5, 0 -5px 15px #f0ffff;
 }
 /* モーダル */
 .overlay {

@@ -5,7 +5,7 @@
       <button class="finish" type="submit" @click.prevent="finishConfig">Close</button>
     </div>
       <div class="outlineGroov">
-        <div>Default Background Theme :</div>
+        <div>デフォルト適用される背景テーマ :</div>
         <set-theme class="set-theme-div" ref="defaultColorSetting" @cardsTheme="getSetupTheme" :havingTheme="defaultSettings"></set-theme>
         <button class="okButton" type="submit" @click.prevent="giveDefaultTheme">OK !!</button>
       </div>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import SetTheme from './SetTheme.vue'
+import SetTheme from '../parts/SetTheme.vue'
 export default {
   name: 'SetupPage',
   props: {
@@ -47,7 +47,7 @@ export default {
       this.defaultColorIs = null
     },
     addDefaulChoice() {
-      this.$nextTick(this.$refs.defaultColorSetting.addDefault())
+      this.$refs.defaultColorSetting.addDefault()
     }
   },
   components: {

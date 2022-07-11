@@ -41,7 +41,7 @@ export default {
         }
       } return 'Default'
     },
-    /* 初期テーマを取得 */
+    /* 初期テーマ名を取得 */
     firstTheme: function() {
       if (this.defaultCheck === 'Default') {
         return this.defaultCheck
@@ -53,7 +53,7 @@ export default {
     choseTheme() {
       this.$emit('cardsTheme', this.newTheme)
     },
-    /* 編集時、既存テーマをセット */
+    /* Edit用。computedで取得した既存のテーマを初期値にセット */
     setEditingTheme() {
       this.newTheme = this.firstTheme
       this.choseTheme()
@@ -62,7 +62,7 @@ export default {
     clearTheme() {
       this.newTheme = null
     },
-    /* 'Default'を選択肢から外す、戻す */
+    /* 設定画面用。 'Default'を選択肢から外す、戻す */
     removeDefault() {
       if(this.values.length === this.valuesLength-1) {
         return
